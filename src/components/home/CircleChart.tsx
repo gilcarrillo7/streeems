@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Chart as ChartJS, ArcElement } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Pie } from "react-chartjs-2";
@@ -17,27 +17,30 @@ const CircleChart = () => {
 	const status = useAppSelector(selectStatus);
 	const error = useAppSelector(selectError);
 
-	const data = {
-		labels: pieData.dossiers,
-		datasets: [
-			{
-				label: "",
-				data: pieData.percents,
-				backgroundColor: pieData.colors,
-				borderWidth: 0,
-				datalabels: {
-					color: "white",
-					font: {
-						weight: "bold",
-						size: "20px",
-					},
-					formatter: function (value: number) {
-						return value + "%";
+	const data = useMemo(
+		() => ({
+			labels: pieData.dossiers,
+			datasets: [
+				{
+					label: "",
+					data: pieData.percents,
+					backgroundColor: pieData.colors,
+					borderWidth: 0,
+					datalabels: {
+						color: "white",
+						font: {
+							weight: "bold",
+							size: "20px",
+						},
+						formatter: function (value: number) {
+							return value + "%";
+						},
 					},
 				},
-			},
-		],
-	};
+			],
+		}),
+		[pieData]
+	);
 
 	return (
 		<>

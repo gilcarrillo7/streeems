@@ -63,7 +63,7 @@ const IndexPage: React.FC<PageProps> = () => {
 					<p className="my-8 sm:my-16 text-xl sm:text-3xl font-light">
 						<Trans>home.t6</Trans>
 					</p>
-					<CircleChart />
+					{/* <CircleChart /> */}
 				</div>
 				<div className="flex flex-col sm:flex-row items-center pb-8 sm:pb-16">
 					<p className="my-8 sm:my-16 text-xl sm:text-3xl font-light md:w-2/3">
