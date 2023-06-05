@@ -9,10 +9,6 @@ module.exports = {
 			center: true,
 			padding: {
 				DEFAULT: "15px",
-				sm: "1rem",
-				lg: "2rem",
-				xl: "3rem",
-				"2xl": "4rem",
 			},
 		},
 		fontFamily: {
@@ -34,6 +30,7 @@ module.exports = {
 				tab07: "#3A8175",
 				tab08: "#28727F",
 				tab09: "#708B8E",
+				error: "#EE695D",
 			},
 		},
 	},
