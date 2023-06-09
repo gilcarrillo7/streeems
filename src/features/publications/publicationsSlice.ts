@@ -83,13 +83,7 @@ export const fetchPublications = createAsyncThunk<
 	number,
 	{ rejectValue: FetchError }
 >("publications", async (page: number) => {
-	const response = await fetch(`${BASE_URL}/${PUBLICATIONS}/?page=${page}`, {
-		referrerPolicy: "strict-origin-when-cross-origin",
-		body: null,
-		method: "GET",
-		mode: "cors",
-		credentials: "omit",
-	});
+	const response = await fetch(`${BASE_URL}/${PUBLICATIONS}/?page=${page}`);
 	const data = await response.json();
 	return data;
 });
