@@ -53,7 +53,7 @@ const CircleChart = () => {
 						<div className="w-full flex flex-col md:flex-row gap-8 items-center">
 							<div className="grid grid-cols-2 gap-x-6 md:block md:absolute md:w-56 break-all">
 								{pieData.dossiers.map((dossier, i) => (
-									<div className="relative">
+									<div key={`${i}${dossier}`} className="relative">
 										<div
 											className="rounded-full w-8 h-8 absolute left-0 top-1/2 -translate-y-1/2"
 											style={{ backgroundColor: pieData.colors[i] }}

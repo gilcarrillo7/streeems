@@ -46,7 +46,13 @@ export const fetchDossiers = createAsyncThunk<
 	void,
 	{ rejectValue: FetchError }
 >("dossiers", async () => {
-	const response = await fetch(`${BASE_URL}/${DOSSIERS}`);
+	const response = await fetch(`${BASE_URL}/${DOSSIERS}`, {
+		referrerPolicy: "strict-origin-when-cross-origin",
+		body: null,
+		method: "GET",
+		mode: "cors",
+		credentials: "omit",
+	});
 	const data = await response.json();
 	return data;
 });

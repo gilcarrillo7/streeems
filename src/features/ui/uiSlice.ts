@@ -3,36 +3,32 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
 
 // Define a type for the slice state
-interface CounterState {
-	value: number;
+interface UiState {
+	loginModal: boolean;
 }
 
 // Define the initial state using that type
-const initialState: CounterState = {
-	value: 0,
+const initialState: UiState = {
+	loginModal: false,
 };
 
-export const counterSlice = createSlice({
-	name: "counter",
+export const uiSlice = createSlice({
+	name: "ui",
 	// `createSlice` will infer the state type from the `initialState` argument
 	initialState,
 	reducers: {
-		increment: (state) => {
-			state.value += 1;
+		showLoginModal: (state) => {
+			state.loginModal = true;
 		},
-		decrement: (state) => {
-			state.value -= 1;
-		},
-		// Use the PayloadAction type to declare the contents of `action.payload`
-		incrementByAmount: (state, action: PayloadAction<number>) => {
-			state.value += action.payload;
+		hideLoginModal: (state) => {
+			state.loginModal = false;
 		},
 	},
 });
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export const { showLoginModal, hideLoginModal } = uiSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectCount = (state: RootState) => state.ui;
+export const selectLoginModal = (state: RootState) => state.ui.loginModal;
 
-export default counterSlice.reducer;
+export default uiSlice.reducer;
