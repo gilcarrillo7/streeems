@@ -12,7 +12,7 @@ const Dossier = ({ dossier }: { dossier: IDossier }) => {
 	const [open, setOpen] = useState(false);
 
 	return (
-		<div className={`text-sm break-all w-full md:w-[9%] mb-2 md:mb-0`}>
+		<div className={`text-sm break-all w-full md:w-[11%] mb-2 md:mb-0`}>
 			<div
 				className={`relative p-2 text-white font-bold h-14 flex items-center cursor-pointer md:cursor-auto`}
 				style={{ backgroundColor: getDossierColor(name) }}

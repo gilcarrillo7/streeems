@@ -12,10 +12,7 @@ const Modal = ({
 	useEffect(() => {
 		const closeModal = (e: MouseEvent) => {
 			e.stopPropagation();
-			console.log(modalRef.current);
-			console.log(e.target);
 			if (modalRef.current && !modalRef.current.contains(e.target)) {
-				console.log(modalRef.current.contains(e.target));
 				handleClose();
 			}
 		};
@@ -26,10 +23,7 @@ const Modal = ({
 	}, [modalRef]);
 
 	return (
-		<div
-			className="bg-black/50 w-screen h-screen fixed top-0 left-0 z-10"
-			onClick={handleClose}
-		>
+		<div className="bg-black/50 w-screen h-screen fixed top-0 left-0 z-50">
 			<div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
 				<div className="relative my-6 mx-auto max-w-3xl">
 					<div ref={modalRef} className="bg-white w-[330px]">

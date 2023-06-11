@@ -31,7 +31,9 @@ export const dossiersSlice = createSlice({
 			state.error = null;
 		});
 		builder.addCase(fetchDossiers.fulfilled, (state, { payload }) => {
-			state.dossiers = payload;
+			state.dossiers = payload.filter(
+				(_dossier, index, _arr) => index !== 6 && index !== 7
+			);
 			state.status = "idle";
 		});
 		builder.addCase(fetchDossiers.rejected, (state, { payload }) => {

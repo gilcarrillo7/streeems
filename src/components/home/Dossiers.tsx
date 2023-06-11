@@ -15,7 +15,6 @@ const Dossiers = () => {
 	const status = useAppSelector(selectStatus);
 	const error = useAppSelector(selectError);
 	const dossiers = useAppSelector(selectDossiers);
-	const width = useAppSelector(selectWidth);
 
 	useEffect(() => {
 		dispatch(fetchDossiers());

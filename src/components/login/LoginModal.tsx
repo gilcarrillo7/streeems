@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { hideLoginModal } from "../../features/ui/uiSlice";
+import { setLoginModal } from "../../features/ui/uiSlice";
 import { useAppDispatch } from "../../hooks";
 import Modal from "../shared/Modal";
 import Button from "../shared/Button";
@@ -13,7 +13,7 @@ const LoginModal = () => {
 	const [signin, setSignin] = useState(false);
 
 	return (
-		<Modal handleClose={() => dispatch(hideLoginModal())}>
+		<Modal handleClose={() => dispatch(setLoginModal(false))}>
 			<div className="text-comp1 py-5 px-4">
 				<p className="text-primary font-bold text-2xl text-center">
 					{signin ? <Trans>signin.t1</Trans> : <Trans>signin.t0</Trans>}
