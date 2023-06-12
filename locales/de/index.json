@@ -49,5 +49,13 @@
 	"menu.t5": "Über uns",
 	"menu.t6": "Logout",
 	"search.t1": "Durchsuche unsere Datenbank",
-	"search.t2": "Suchen"
+	"search.t2": "Suchen",
+	"upload.t1": "Publikation hinzufügen",
+	"upload.t2": "Link",
+	"upload.t3": "Titel",
+	"upload.t4": "Cover",
+	"upload.t5": "Journals",
+	"upload.t6": "Publizierende Institution",
+	"upload.t7": "Erscheinungsdatum",
+	"upload.t8": "Hinzufügen"
 }

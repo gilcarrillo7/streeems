@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { setLoginModal } from "../../features/ui/uiSlice";
+import { setLoginModal, setLogged } from "../../features/ui/uiSlice";
 import { useAppDispatch } from "../../hooks";
 import Modal from "../shared/Modal";
 import Button from "../shared/Button";
@@ -52,7 +52,7 @@ const LoginModal = () => {
 					</form>
 				) : (
 					<>
-						<form>
+						<form onSubmit={(e) => e.preventDefault()}>
 							<Input
 								type={"mail"}
 								className={"mb-4"}
@@ -78,7 +78,12 @@ const LoginModal = () => {
 									<Trans>signin.t6</Trans>
 								</a>
 							</div>
-							<Button type="submit" variant="primary" className="!w-full">
+							<Button
+								type="submit"
+								variant="primary"
+								className="!w-full"
+								onClick={() => dispatch(setLogged(true))}
+							>
 								<Trans>signin.t0</Trans>
 							</Button>
 						</form>

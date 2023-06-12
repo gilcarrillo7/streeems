@@ -22,7 +22,11 @@ const Menu = () => {
 						<a href="#" className="hover:underline">
 							<Trans>menu.t2</Trans>
 						</a>
-						<a href="#" className="hover:underline">
+						<a
+							href="#"
+							onClick={() => handleNav("/upload")}
+							className="hover:underline"
+						>
 							<Trans>menu.t3</Trans>
 						</a>
 						<a href="#" className="hover:underline">

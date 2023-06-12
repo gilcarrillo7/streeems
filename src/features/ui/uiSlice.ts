@@ -31,10 +31,15 @@ export const uiSlice = createSlice({
 		setSearchClicked: (state, { payload }) => {
 			state.searchClicked = payload;
 		},
+		setLogged: (state, { payload }) => {
+			state.logged = payload;
+			state.loginModal = false;
+		},
 	},
 });
 
-export const { setLoginModal, setSearchClicked, setMenuOpen } = uiSlice.actions;
+export const { setLoginModal, setSearchClicked, setMenuOpen, setLogged } =
+	uiSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectLogged = (state: RootState) => state.ui.logged;
