@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useTranslation } from "gatsby-plugin-react-i18next";
 import Instagram from "../icons/Instagram";
 import Linkedin from "../icons/Linkedin";
 import Twitter from "../icons/Twitter";
@@ -6,6 +7,8 @@ import Button from "../shared/Button";
 import { Trans } from "gatsby-plugin-react-i18next";
 
 const Footer = () => {
+	const { t } = useTranslation();
+
 	return (
 		<footer>
 			<div className="bg-secundary text-white">
@@ -20,12 +23,15 @@ const Footer = () => {
 							</p>
 						</div>
 						<div className="md:w-2/3 flex flex-col md:flex-row gap-8 md:items-end mt-12 md:mt-0 md:pl-8">
-							<Button variant="white">
-								<Trans>footer.button1</Trans>
-							</Button>
-							<Button variant="primary">
-								<Trans>footer.button2</Trans>
-							</Button>
+							<div className="flex flex-col sm:flex-row">
+								<input
+									placeholder={t("footer.button1") || ""}
+									className="mb-4 sm:mb-0 sm:mr-12 sm:min-w-[300px] bg-transparent text-white border-b-2 font-bold border-white placeholder-white text-center p-2"
+								/>
+								<Button variant="primary">
+									<Trans>footer.button2</Trans>
+								</Button>
+							</div>
 						</div>
 					</div>
 					<div className="py-4 flex flex-col md:flex-row justify-between items-center">

@@ -12,6 +12,7 @@ interface DossierState {
 	status: "loading" | "idle";
 	error: string | null;
 	dossiers: IDossier[];
+	journals: string[];
 }
 
 // Define the initial state using that type
@@ -19,6 +20,7 @@ const initialState: DossierState = {
 	status: "idle",
 	error: null,
 	dossiers: [],
+	journals: [],
 };
 
 export const dossiersSlice = createSlice({
@@ -31,9 +33,18 @@ export const dossiersSlice = createSlice({
 			state.error = null;
 		});
 		builder.addCase(fetchDossiers.fulfilled, (state, { payload }) => {
+			const auxJournals: string[] = [];
+			state.dossiers = [];
+			state.journals = [];
 			state.dossiers = payload.filter(
 				(_dossier, index, _arr) => index !== 6 && index !== 7
 			);
+			state.dossiers.forEach((dossier) =>
+				dossier.journals.forEach((journal) =>
+					auxJournals.push(journal.name.toLowerCase())
+				)
+			);
+			state.journals = auxJournals.sort();
 			state.status = "idle";
 		});
 		builder.addCase(fetchDossiers.rejected, (state, { payload }) => {
@@ -58,5 +69,6 @@ export const selectError = (state: RootState) => state.dossiers.error;
 export const selectDossiers = (state: RootState) => state.dossiers.dossiers;
 export const selectWidth = (state: RootState) =>
 	Math.floor(100 / state.dossiers.dossiers.length);
+export const selectJournals = (state: RootState) => state.dossiers.journals;
 
 export default dossiersSlice.reducer;

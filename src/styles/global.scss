@@ -3,3 +3,10 @@
 @tailwind utilities;
 
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&family=Zen+Dots&display=swap");
+
+input:checked + div {
+	@apply border-primary;
+}
+input:checked + div svg {
+	@apply block;
+}

@@ -8,6 +8,7 @@ module.exports = {
 		container: {
 			center: true,
 			padding: {
+				lg: "2rem",
 				DEFAULT: "15px",
 			},
 		},
@@ -31,6 +32,9 @@ module.exports = {
 				tab08: "#28727F",
 				tab09: "#708B8E",
 				error: "#EE695D",
+			},
+			opacity: {
+				85: ".85",
 			},
 		},
 	},

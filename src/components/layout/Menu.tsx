@@ -19,7 +19,11 @@ const Menu = () => {
 			<div className="container flex flex-col sm:flex-row">
 				<div className="sm:w-1/2 text-3xl sm:text-5xl sm:order-2">
 					<div className="flex flex-col gap-4 sm:gap-8 mb-12 sm:mb-0 items-center sm:items-start">
-						<a href="#" className="hover:underline">
+						<a
+							href="#"
+							onClick={() => handleNav("/")}
+							className="hover:underline"
+						>
 							<Trans>menu.t2</Trans>
 						</a>
 						<a
@@ -29,7 +33,11 @@ const Menu = () => {
 						>
 							<Trans>menu.t3</Trans>
 						</a>
-						<a href="#" className="hover:underline">
+						<a
+							href="#"
+							onClick={() => handleNav("/profile")}
+							className="hover:underline"
+						>
 							<Trans>menu.t4</Trans>
 						</a>
 						<a

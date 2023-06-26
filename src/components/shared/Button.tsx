@@ -20,7 +20,7 @@ const Button = ({
 			{variant === "comp1" && (
 				<button
 					type={type}
-					className={`${className} text-comp1 font-bold border-2 border-comp1 py-2 px-8 sm:px-20 hover:bg-comp1 hover:text-white w-4/5 sm:w-auto mx-auto`}
+					className={`${className} text-comp1 font-bold border-2 border-comp1 py-2 px-8  hover:bg-comp1 hover:text-white sm:w-auto mx-auto sm:min-w-[220px] `}
 					onClick={onClick}
 				>
 					{children}
@@ -29,7 +29,7 @@ const Button = ({
 			{variant === "white" && (
 				<button
 					type={type}
-					className={`${className} text-white font-bold border-2 border-white py-2 px-8 sm:px-20 hover:bg-white hover:text-secundary w-4/5 sm:w-auto mx-auto`}
+					className={`${className} text-white font-bold border-2 border-white py-2 px-8  hover:bg-white hover:text-secundary sm:w-auto mx-auto sm:min-w-[220px] `}
 					onClick={onClick}
 				>
 					{children}
@@ -38,7 +38,7 @@ const Button = ({
 			{variant === "primary" && (
 				<button
 					type={type}
-					className={`${className} text-white font-bold border-2 border-primary bg-primary py-2 px-8 sm:px-20 hover:bg-white hover:text-primary w-4/5 sm:w-auto mx-auto`}
+					className={`${className} text-white font-bold border-2 border-primary bg-primary py-2 px-8  hover:bg-white hover:text-primary sm:w-auto mx-auto sm:min-w-[220px] `}
 					onClick={onClick}
 				>
 					{children}
@@ -47,7 +47,7 @@ const Button = ({
 			{variant === "error" && (
 				<button
 					type={type}
-					className={`${className} text-white font-bold border-2 border-error bg-error py-2 px-8 sm:px-20 hover:bg-white hover:text-error w-4/5 sm:w-auto mx-auto`}
+					className={`${className} text-white font-bold border-2 border-error bg-error py-2 px-8  hover:bg-white hover:text-error sm:w-auto mx-auto sm:min-w-[220px] `}
 					onClick={onClick}
 				>
 					{children}

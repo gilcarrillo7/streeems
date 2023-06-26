@@ -5,6 +5,7 @@ import { useAppDispatch } from "../../hooks";
 import Modal from "../shared/Modal";
 import Button from "../shared/Button";
 import Input from "../shared/Input";
+import Checkbox from "../shared/Checkbox";
 
 const LoginModal = () => {
 	const dispatch = useAppDispatch();
@@ -65,14 +66,7 @@ const LoginModal = () => {
 							/>
 							<div className="w-full mb-4 flex justify-between text-sm">
 								<label className="">
-									<input
-										type="checkbox"
-										name="remember"
-										className="mr-2 rounded-full"
-									/>
-									<span>
-										<Trans>signin.t5</Trans>
-									</span>
+									<Checkbox label={t("signin.t5")} />
 								</label>
 								<a href="#" className="text-primary font-bold hover:underline">
 									<Trans>signin.t6</Trans>

@@ -50,6 +50,7 @@ export const publicationsSlice = createSlice({
 		builder.addCase(fetchPublications.fulfilled, (state, { payload }) => {
 			if (payload.detail) state.error = payload.detail;
 			else {
+				state.publications = [];
 				state.publications.push(...payload.results);
 				state.count = payload.count;
 				state.next = payload.next ? payload.next.split("=")[1] : "";
@@ -94,7 +95,9 @@ export const selectError = (state: RootState) => state.publications.error;
 export const selectPublications = (state: RootState) =>
 	state.publications.publications;
 export const selectHomePublications = (state: RootState) =>
-	state.publications.publications.slice(0, 9);
+	state.ui.logged
+		? state.publications.publications
+		: state.publications.publications.slice(0, 9);
 export const selectPieChart = (state: RootState) => state.publications.pieChart;
 
 export default publicationsSlice.reducer;
