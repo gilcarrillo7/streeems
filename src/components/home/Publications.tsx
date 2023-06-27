@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Trans } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import {
@@ -7,6 +7,7 @@ import {
 	selectError,
 	selectHomePublications,
 	selectStatus,
+	selectCurrentPage,
 } from "../../features/publications/publicationsSlice";
 import { selectLogged } from "../../features/ui/uiSlice";
 import Loader from "../shared/Loader";
@@ -21,6 +22,10 @@ const Publications = () => {
 	const publications = useAppSelector(selectHomePublications);
 	const count = useAppSelector(selectCount);
 	const logged = useAppSelector(selectLogged);
+	const currentPage = useAppSelector(selectCurrentPage);
+
+	const firstPub = useMemo(() => (currentPage - 1) * 35 + 1, [currentPage]);
+	const lastPub = useMemo(() => firstPub + 34, [firstPub]);
 
 	useEffect(() => {
 		dispatch(fetchPublications(1));
@@ -38,7 +43,9 @@ const Publications = () => {
 							{logged && <Filters />}
 							{logged ? (
 								<p className="text-primary my-4 sm:my-8 text-lg sm:text-xl">
-									<span className="font-bold">1-35</span>{" "}
+									<span className="font-bold">
+										{firstPub}-{lastPub}
+									</span>{" "}
 									<Trans>publications.t1</Trans>{" "}
 									<span className="font-bold">{count}</span>{" "}
 									<Trans>publications.t2</Trans>

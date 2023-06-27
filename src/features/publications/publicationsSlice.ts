@@ -8,11 +8,17 @@ type FetchError = {
 	message: string;
 };
 
+type TypeFilter = {
+	title: string;
+	journal: string[];
+};
+
 // Define a type for the slice state
 interface PublicationsState {
 	status: "loading" | "idle";
 	error: string | null;
 	publications: IPublication[];
+	filterPublications: IPublication[];
 	count: number;
 	next: string | null;
 	previous: string | null;
@@ -21,6 +27,8 @@ interface PublicationsState {
 		percents: number[];
 		colors: string[];
 	};
+	currentPage: number;
+	filters: TypeFilter;
 }
 
 // Define the initial state using that type
@@ -28,6 +36,7 @@ const initialState: PublicationsState = {
 	status: "idle",
 	error: null,
 	publications: [],
+	filterPublications: [],
 	count: 0,
 	next: null,
 	previous: null,
@@ -36,12 +45,45 @@ const initialState: PublicationsState = {
 		percents: [],
 		colors: [],
 	},
+	currentPage: 1,
+	filters: { title: "", journal: [] },
+};
+
+const applyFilters = (
+	publications: IPublication[],
+	filters: TypeFilter
+): IPublication[] => {
+	let filteredPubs = publications;
+	const { title } = filters;
+	const searchTitle = title.toLowerCase();
+	filteredPubs = publications.filter((pub) =>
+		pub.title.toLowerCase().includes(searchTitle)
+	);
+	return filteredPubs;
 };
 
 export const publicationsSlice = createSlice({
 	name: "publications",
 	initialState,
-	reducers: {},
+	reducers: {
+		setCurrentPage: (state, { payload }) => {
+			state.currentPage = payload;
+		},
+		setFilterTitle: (state, { payload }) => {
+			state.filters.title = payload;
+			const searchTitle = payload.toLowerCase();
+			state.filterPublications = state.publications.filter((pub) =>
+				pub.title.toLowerCase().includes(searchTitle)
+			);
+		},
+		setFilters: (state, { payload }) => {
+			state.filters = { ...state.filters, ...payload };
+			state.filterPublications = applyFilters(
+				state.publications,
+				state.filters
+			);
+		},
+	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchPublications.pending, (state) => {
 			state.status = "loading";
@@ -52,6 +94,10 @@ export const publicationsSlice = createSlice({
 			else {
 				state.publications = [];
 				state.publications.push(...payload.results);
+				state.filterPublications = applyFilters(
+					state.publications,
+					state.filters
+				);
 				state.count = payload.count;
 				state.next = payload.next ? payload.next.split("=")[1] : "";
 				state.previous = payload.previous;
@@ -89,6 +135,8 @@ export const fetchPublications = createAsyncThunk<
 	return data;
 });
 
+export const { setCurrentPage, setFilters } = publicationsSlice.actions;
+
 export const selectStatus = (state: RootState) => state.publications.status;
 export const selectCount = (state: RootState) => state.publications.count;
 export const selectError = (state: RootState) => state.publications.error;
@@ -96,8 +144,11 @@ export const selectPublications = (state: RootState) =>
 	state.publications.publications;
 export const selectHomePublications = (state: RootState) =>
 	state.ui.logged
-		? state.publications.publications
+		? state.publications.filterPublications
 		: state.publications.publications.slice(0, 9);
 export const selectPieChart = (state: RootState) => state.publications.pieChart;
+export const selectCurrentPage = (state: RootState) =>
+	state.publications.currentPage;
+export const selectFilters = (state: RootState) => state.publications.filters;
 
 export default publicationsSlice.reducer;

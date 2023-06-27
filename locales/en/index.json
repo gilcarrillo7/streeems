@@ -61,8 +61,8 @@
 	"von": "Von",
 	"bis": "Bis",
 	"filter.t1": "Journal",
-	"filter.t2": "Institution",
-	"filter.t3": "Datum",
+	"filter.t2": "Datum",
+	"filter.t3": "Institution",
 	"filter.t4": "Typ",
 	"filter.t5": "Sprache",
 	"typ.t1": "Studie (>100 Seiten)",
@@ -77,5 +77,7 @@
 	"profile.t3": "Name:",
 	"profile.t4": "E-Mailadresse:",
 	"profile.t5": "Passwort:",
-	"profile.t6": "Ändern"
+	"profile.t6": "Ändern",
+	"paginator.t1": "Vorherige",
+	"paginator.t2": "Nächste"
 }

@@ -59,7 +59,7 @@ const SelectDate = ({ name }: IProps) => {
 					<div className="px-6 pt-8 pb-12 w-full">
 						<Button
 							variant={"primary"}
-							className="!w-full !px-0"
+							className="!w-full !px-0 !min-w-full"
 							onClick={clickFilter}
 						>
 							Filter
