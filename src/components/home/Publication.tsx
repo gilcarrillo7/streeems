@@ -30,8 +30,8 @@ const Publication = ({ publication }: { publication: IPublication }) => {
 	const logged = useAppSelector(selectLogged);
 	const { language } = useI18next();
 	return (
-		<div className={`text-comp1 mb-8 sm:mb-0`}>
-			<div className="relative mx-auto h-[300px] relative overflow-hidden border-2 border-secundary">
+		<div className={`flex flex-col text-comp1 mb-8 sm:mb-0`}>
+			<div className="relative mx-auto w-full h-[300px] relative overflow-hidden border-2 border-secundary">
 				<a href={url} target="_blank">
 					<img className={`absolute w-full`} src={header_image} />
 				</a>
@@ -40,17 +40,19 @@ const Publication = ({ publication }: { publication: IPublication }) => {
 			<h3 className="text-secundary font-bold my-6 sm:my-8 text-base">
 				{journal}
 			</h3>
-			<p className="text-xl mb-8 sm:mb-16 hover:underline">
+			<p className="text-xl mb-8 hover:underline">
 				<a href={url} target="_blank" className="">
 					{title}
 				</a>
 			</p>
-			<p className="text-secundary text-base font-bold ">{institutionName}</p>
-			<p className="taxt-sm">{getMonthYear(date, language)}</p>
-			<p className="text-sm mb-4">
-				{pages_number} <Trans>publication.pages</Trans>
-			</p>
-			<span className="px-2 py-1 border border-comp1 text-sm">{dossier}</span>
+			<div className="mt-auto">
+				<p className="text-secundary text-base font-bold ">{institutionName}</p>
+				<p className="taxt-sm">{getMonthYear(date, language)}</p>
+				<p className="text-sm mb-4">
+					{pages_number} <Trans>publication.pages</Trans>
+				</p>
+				<span className="px-2 py-1 border border-comp1 text-sm">{dossier}</span>
+			</div>
 		</div>
 	);
 };

@@ -84,9 +84,11 @@ const Paginator = () => {
 				onClick={() => handleChangePage(currentPage - 1)}
 			>
 				<LeftArrow />
-				<Trans>paginator.t1</Trans>
+				<span className="hidden sm:block">
+					<Trans>paginator.t1</Trans>
+				</span>
 			</div>
-			<div className="flex gap-2 text-xl items-center cursor-pointer">
+			<div className="flex gap-2 items-center cursor-pointer text-base sm:text-xl">
 				{pages.map((page) => (
 					<div
 						key={`page${page}`}
@@ -107,7 +109,9 @@ const Paginator = () => {
 				}`}
 				onClick={() => handleChangePage(currentPage + 1)}
 			>
-				<Trans>paginator.t2</Trans>
+				<span className="hidden sm:block">
+					<Trans>paginator.t2</Trans>
+				</span>
 				<RightArrow />
 			</div>
 		</div>

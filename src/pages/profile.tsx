@@ -12,8 +12,8 @@ const Profile: React.FC<PageProps> = () => {
 			<div
 				className={`md:min-h-[calc(100vh-126px)] text-comp1 flex items-center relative`}
 			>
-				<div className="container flex flex-col md:flex-row pt-20 md:pt-0">
-					<div className="md:w-1/2 z-20 sm:pr-8 lg:pr-20">
+				<div className="container flex flex-col lg:flex-row pt-20 md:pt-0">
+					<div className="lg:w-1/2 z-20 lg:pr-20">
 						<h1 className="text-primary text-3xl sm:text-4xl font-light mb-6">
 							<Trans>profile.t1</Trans>
 						</h1>
@@ -67,8 +67,8 @@ const Profile: React.FC<PageProps> = () => {
 							</div>
 						</form>
 					</div>
-					<div className="w-[calc(100vw)] md:w-1/2 mt-12 md:mt-0 -ml-[15px] sm:-ml-[2rem] md:ml-0 md:absolute md:top-0 md:right-0 z-10 md:min-h-[calc(100vh-126px)] bg-primary text-white flex items-center">
-						<div className="px-4 lg:px-24 py-32 md:py-0">
+					<div className="z-10 lg:w-1/2 sm:py-6 mt-12 lg:mt-0 -mx-4 sm:mx-0 px-4 sm:px-0 bg-primary text-white flex items-center">
+						<div className="px-4 lg:pl-8 py-8 lg:py-0">
 							<p className="text-xl sm:text-2xl">Wallet</p>
 							<p className="text-8xl sm:text-9xl text-center my-8">
 								46{" "}
@@ -91,6 +91,7 @@ const Profile: React.FC<PageProps> = () => {
 							</p>
 						</div>
 					</div>
+					<div className="hidden sm:block w-full lg:w-1/2 h-2/3 lg:h-full  bg-primary absolute top-1/2 lg:top-0 left-0 lg:left-1/2 -translate-y-6 lg:translate-y-0 z-0"></div>
 				</div>
 			</div>
 		</Layout>

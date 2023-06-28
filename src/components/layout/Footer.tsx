@@ -13,8 +13,8 @@ const Footer = () => {
 		<footer>
 			<div className="bg-secundary text-white">
 				<div className="container">
-					<div className="flex flex-col md:flex-row mb-16 pt-4 sm:pt-8">
-						<div className="md:w-1/3">
+					<div className="flex flex-col lg:flex-row mb-16 pt-4 sm:pt-8">
+						<div className="lg:w-1/3">
 							<h4 className="font-bold text-2xl sm:text-3xl mb-8">
 								<Trans>footer.t1</Trans>
 							</h4>
@@ -22,7 +22,7 @@ const Footer = () => {
 								<Trans>footer.t2</Trans>
 							</p>
 						</div>
-						<div className="md:w-2/3 flex flex-col md:flex-row gap-8 md:items-end mt-12 md:mt-0 md:pl-8">
+						<div className="lg:w-2/3 flex flex-col md:flex-row gap-8 md:items-end mt-12 md:mt-0 md:pl-8">
 							<div className="flex flex-col sm:flex-row">
 								<input
 									placeholder={t("footer.button1") || ""}
