@@ -1,31 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Button from "./Button";
 import SelectArrow from "./SelectArrow";
 import { Trans } from "react-i18next";
+import useOutsideClick from "../../hooks/useOutsideClick";
 
 interface IProps {
 	name: string;
 }
 
 const SelectDate = ({ name }: IProps) => {
-	const [selOptions, setSelOptions] = useState<string[]>([]);
 	const [show, setShow] = useState<boolean>(false);
-
-	const handleOption = (opt: string) => {
-		let selected = [...selOptions];
-		const index = selected.findIndex((sel) => sel === opt);
-		if (index === -1) {
-			selected = [...selected, opt];
-			selected.sort();
-		} else {
-			selected.splice(index, 1);
-		}
-		setSelOptions([...selected]);
-	};
-
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const val = e.target.value;
-	};
+	const selectRef = useOutsideClick(() => setShow(false));
 
 	const clickFilter = () => {
 		setShow(false);
@@ -41,7 +26,10 @@ const SelectDate = ({ name }: IProps) => {
 				<SelectArrow className="cursor-pointer absolute right-0 top-1/2 -translate-y-1/2" />
 			</div>
 			{show && (
-				<div className="sm:absolute w-full flex flex-col bg-white/85 z-10 top-full text-comp1">
+				<div
+					ref={selectRef}
+					className="sm:absolute w-full flex flex-col bg-white/85 z-10 top-full text-comp1"
+				>
 					<div className="overflow-auto px-2">
 						<label className="mt-4 block">
 							<Trans>von</Trans>

@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from "react";
+import React from "react";
+import useOutsideClick from "../../hooks/useOutsideClick";
 
 const Modal = ({
 	children,
@@ -7,20 +8,7 @@ const Modal = ({
 	children: React.ReactNode;
 	handleClose: () => void;
 }) => {
-	const modalRef = useRef<any>(null);
-
-	useEffect(() => {
-		const closeModal = (e: MouseEvent) => {
-			e.stopPropagation();
-			if (modalRef.current && !modalRef.current.contains(e.target)) {
-				handleClose();
-			}
-		};
-		document.addEventListener("mousedown", closeModal);
-		return () => {
-			document.removeEventListener("mousedown", closeModal);
-		};
-	}, [modalRef]);
+	const modalRef = useOutsideClick(handleClose);
 
 	return (
 		<div className="bg-black/50 w-screen h-screen fixed top-0 left-0 z-50">

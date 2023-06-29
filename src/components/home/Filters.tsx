@@ -67,7 +67,11 @@ const Filters = () => {
 	const showSearch = useAppSelector(selectSearchClicked);
 	const journals = useAppSelector(selectJournals);
 	const institutions = useAppSelector(selectInstitutionsName);
-	const { title: tilteFilter } = useAppSelector(selectFilters);
+	const {
+		title: tilteFilter,
+		journals: journalFilters,
+		institutions: institutionsFilters,
+	} = useAppSelector(selectFilters);
 
 	const searchRef = useRef<HTMLInputElement>(null);
 
@@ -78,6 +82,14 @@ const Filters = () => {
 
 	const handleSearch = () => {
 		dispatch(setFilters({ title: searchRef.current?.value }));
+	};
+
+	const handleJournals = (journals: string[]) => {
+		dispatch(setFilters({ journals }));
+	};
+
+	const handleInstitutions = (institutions: string[]) => {
+		dispatch(setFilters({ institutions }));
 	};
 
 	return (
@@ -106,13 +118,23 @@ const Filters = () => {
 			)}
 			<div className="flex flex-col sm:flex-row gap-4">
 				<div className="sm:w-1/5">
-					<Select name={t("filter.t1")} options={journals} />
+					<Select
+						name={t("filter.t1")}
+						options={journals}
+						activeOptions={journalFilters}
+						setActiveOptions={handleJournals}
+					/>
 				</div>
 				<div className="sm:w-1/5">
 					<SelectDate name={t("filter.t2")} />
 				</div>
 				<div className="sm:w-1/5">
-					<Select name={t("filter.t3")} options={institutions} />
+					<Select
+						name={t("filter.t3")}
+						options={institutions}
+						activeOptions={institutionsFilters}
+						setActiveOptions={handleInstitutions}
+					/>
 				</div>
 				<div className="sm:w-1/5">
 					<SelectOptions
@@ -127,12 +149,36 @@ const Filters = () => {
 					/>
 				</div>
 			</div>
-			<div className="flex my-4">
+			<div className="flex mt-8 mb-4 gap-2">
 				{tilteFilter != "" && (
 					<FilterBox closeClick={() => dispatch(setFilters({ title: "" }))}>
 						{tilteFilter}
 					</FilterBox>
 				)}
+				{journalFilters.map((journal, i) => (
+					<FilterBox
+						key={`${journal}${i}`}
+						closeClick={() => {
+							const newarr = [...journalFilters];
+							newarr.splice(i, 1);
+							dispatch(setFilters({ journals: newarr }));
+						}}
+					>
+						{journal}
+					</FilterBox>
+				))}
+				{institutionsFilters.map((institution, i) => (
+					<FilterBox
+						key={`${institution}${i}`}
+						closeClick={() => {
+							const newarr = [...institutionsFilters];
+							newarr.splice(i, 1);
+							dispatch(setFilters({ institutions: newarr }));
+						}}
+					>
+						{institution}
+					</FilterBox>
+				))}
 			</div>
 		</>
 	);

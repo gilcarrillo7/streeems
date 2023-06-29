@@ -56,6 +56,8 @@ export const selectError = (state: RootState) => state.institutions.error;
 export const selectInstitutions = (state: RootState) =>
 	state.institutions.institutions;
 export const selectInstitutionsName = (state: RootState) =>
-	state.institutions.institutions.map((institution) => institution.name);
+	state.institutions.institutions.map((institution) =>
+		institution.name.toLowerCase()
+	);
 
 export default institutionsSlice.reducer;

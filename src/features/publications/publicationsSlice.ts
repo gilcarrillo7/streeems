@@ -10,7 +10,8 @@ type FetchError = {
 
 type TypeFilter = {
 	title: string;
-	journal: string[];
+	journals: string[];
+	institutions: string[];
 };
 
 // Define a type for the slice state
@@ -46,7 +47,7 @@ const initialState: PublicationsState = {
 		colors: [],
 	},
 	currentPage: 1,
-	filters: { title: "", journal: [] },
+	filters: { title: "", journals: [], institutions: [] },
 };
 
 const applyFilters = (
@@ -54,11 +55,21 @@ const applyFilters = (
 	filters: TypeFilter
 ): IPublication[] => {
 	let filteredPubs = publications;
-	const { title } = filters;
+	const { title, journals, institutions } = filters;
 	const searchTitle = title.toLowerCase();
 	filteredPubs = publications.filter((pub) =>
 		pub.title.toLowerCase().includes(searchTitle)
 	);
+	if (journals.length > 0) {
+		filteredPubs = filteredPubs.filter((pub) =>
+			journals.includes(pub.journal.toLowerCase())
+		);
+	}
+	if (institutions.length > 0) {
+		filteredPubs = filteredPubs.filter((pub) =>
+			institutions.includes(pub.institution.name.toLowerCase())
+		);
+	}
 	return filteredPubs;
 };
 
