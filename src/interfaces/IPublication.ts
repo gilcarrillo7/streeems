@@ -2,7 +2,7 @@ export default interface IPublication {
 	id: string;
 	title: string;
 	content: Content;
-	date: Date;
+	date: string;
 	week: number;
 	month: number;
 	type: IType;
@@ -13,8 +13,8 @@ export default interface IPublication {
 	dossier: string;
 	journal: string;
 	feedback: unknown;
-	created: Date;
-	modified: Date;
+	created: string;
+	modified: string;
 }
 export enum Content {
 	Tbd = "tbd",

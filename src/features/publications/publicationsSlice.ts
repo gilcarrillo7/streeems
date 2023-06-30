@@ -12,6 +12,10 @@ type TypeFilter = {
 	title: string;
 	journals: string[];
 	institutions: string[];
+	types: string[];
+	langs: string[];
+	dateFrom: string | null;
+	dateTo: string | null;
 };
 
 // Define a type for the slice state
@@ -47,7 +51,15 @@ const initialState: PublicationsState = {
 		colors: [],
 	},
 	currentPage: 1,
-	filters: { title: "", journals: [], institutions: [] },
+	filters: {
+		title: "",
+		journals: [],
+		institutions: [],
+		types: [],
+		langs: [],
+		dateFrom: "",
+		dateTo: "",
+	},
 };
 
 const applyFilters = (
@@ -55,7 +67,8 @@ const applyFilters = (
 	filters: TypeFilter
 ): IPublication[] => {
 	let filteredPubs = publications;
-	const { title, journals, institutions } = filters;
+	const { title, journals, institutions, types, langs, dateFrom, dateTo } =
+		filters;
 	const searchTitle = title.toLowerCase();
 	filteredPubs = publications.filter((pub) =>
 		pub.title.toLowerCase().includes(searchTitle)
@@ -68,6 +81,31 @@ const applyFilters = (
 	if (institutions.length > 0) {
 		filteredPubs = filteredPubs.filter((pub) =>
 			institutions.includes(pub.institution.name.toLowerCase())
+		);
+	}
+	if (types.length > 0) {
+		filteredPubs = filteredPubs.filter((pub) =>
+			types.includes(pub.type.toLowerCase())
+		);
+	}
+	if (langs.length > 0 && langs[0] !== "alle") {
+		filteredPubs = filteredPubs.filter((pub) =>
+			pub.institution.country
+				? langs.includes(pub.institution.country.toLowerCase())
+				: false
+		);
+	}
+	if (dateFrom) {
+		const from = new Date(Date.parse(dateFrom)).getTime();
+		console.log(from);
+		filteredPubs = filteredPubs.filter(
+			(pub) => new Date(Date.parse(pub.date)).getTime() >= from
+		);
+	}
+	if (dateTo) {
+		const to = new Date(Date.parse(dateTo)).getTime();
+		filteredPubs = filteredPubs.filter(
+			(pub) => new Date(Date.parse(pub.date)).getTime() <= to
 		);
 	}
 	return filteredPubs;

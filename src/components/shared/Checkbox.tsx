@@ -4,10 +4,14 @@ const Checkbox = ({
 	label,
 	className = "",
 	onChange,
+	value = "yes",
+	checked,
 }: {
 	label: string;
 	className?: string;
 	onChange?: () => void;
+	value?: string;
+	checked?: boolean;
 }) => {
 	return (
 		<div className={`p-0 cursor-pointer ${className}`}>
@@ -16,9 +20,10 @@ const Checkbox = ({
 					type="checkbox"
 					id={label}
 					name={label}
-					value="yes"
+					value={value}
 					className="opacity-0 absolute h-4 w-4"
 					onChange={onChange}
+					checked={checked}
 				/>
 				<div className="bg-white border-2 rounded-md border-comp1 w-5 h-5 flex flex-shrink-0 justify-center items-center mr-2 focus-within:border-primary">
 					<svg

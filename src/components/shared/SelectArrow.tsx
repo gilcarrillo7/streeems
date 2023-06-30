@@ -1,6 +1,12 @@
 import * as React from "react";
 
-const SelectArrow = ({ className }: { className: string }) => (
+const SelectArrow = ({
+	className,
+	onClick,
+}: {
+	className: string;
+	onClick?: () => void;
+}) => (
 	<svg
 		className={className}
 		width="19"
@@ -8,6 +14,7 @@ const SelectArrow = ({ className }: { className: string }) => (
 		viewBox="0 0 19 13"
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
+		onClick={onClick}
 	>
 		<path
 			d="M17.5 2L9.5 10L1.5 2"

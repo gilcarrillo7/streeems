@@ -71,6 +71,10 @@ const Filters = () => {
 		title: tilteFilter,
 		journals: journalFilters,
 		institutions: institutionsFilters,
+		types: typesFilters,
+		langs: langFilters,
+		dateFrom,
+		dateTo,
 	} = useAppSelector(selectFilters);
 
 	const searchRef = useRef<HTMLInputElement>(null);
@@ -90,6 +94,22 @@ const Filters = () => {
 
 	const handleInstitutions = (institutions: string[]) => {
 		dispatch(setFilters({ institutions }));
+	};
+
+	const handleTypes = (types: string[]) => {
+		dispatch(setFilters({ types }));
+	};
+
+	const handleLangs = (langs: string[]) => {
+		dispatch(setFilters({ langs }));
+	};
+
+	const handleDateFrom = (dateFrom: string) => {
+		dispatch(setFilters({ dateFrom }));
+	};
+
+	const handleDateTo = (dateTo: string) => {
+		dispatch(setFilters({ dateTo }));
 	};
 
 	return (
@@ -126,7 +146,13 @@ const Filters = () => {
 					/>
 				</div>
 				<div className="sm:w-1/5">
-					<SelectDate name={t("filter.t2")} />
+					<SelectDate
+						name={t("filter.t2")}
+						activeDateFrom={dateFrom || ""}
+						activeDateTo={dateTo || ""}
+						setActiveDateFrom={handleDateFrom}
+						setActiveDateTo={handleDateTo}
+					/>
 				</div>
 				<div className="sm:w-1/5">
 					<Select
@@ -139,13 +165,26 @@ const Filters = () => {
 				<div className="sm:w-1/5">
 					<SelectOptions
 						name={t("filter.t4")}
-						options={[t("typ.t1"), t("typ.t2"), t("typ.t3"), t("typ.t4")]}
+						options={[
+							{ name: t("typ.t1"), value: "studie" },
+							{ name: t("typ.t2"), value: "analyse" },
+							{ name: t("typ.t3"), value: "paper" },
+							{ name: t("typ.t4"), value: "factsheet" },
+						]}
+						activeOptions={typesFilters}
+						setActiveOptions={handleTypes}
 					/>
 				</div>
 				<div className="sm:w-1/5">
 					<SelectOptions
 						name={t("filter.t5")}
-						options={[t("lang.t1"), t("lang.t2"), t("lang.t3")]}
+						options={[
+							{ name: t("lang.t1"), value: "alle" },
+							{ name: t("lang.t2"), value: "de" },
+							{ name: t("lang.t3"), value: "global" },
+						]}
+						activeOptions={langFilters}
+						setActiveOptions={handleLangs}
 					/>
 				</div>
 			</div>
@@ -153,6 +192,16 @@ const Filters = () => {
 				{tilteFilter != "" && (
 					<FilterBox closeClick={() => dispatch(setFilters({ title: "" }))}>
 						{tilteFilter}
+					</FilterBox>
+				)}
+				{dateFrom && (
+					<FilterBox closeClick={() => dispatch(setFilters({ dateFrom: "" }))}>
+						<Trans>von</Trans>: {dateFrom}
+					</FilterBox>
+				)}
+				{dateTo && (
+					<FilterBox closeClick={() => dispatch(setFilters({ dateTo: "" }))}>
+						<Trans>bis</Trans>: {dateTo}
 					</FilterBox>
 				)}
 				{journalFilters.map((journal, i) => (
@@ -177,6 +226,30 @@ const Filters = () => {
 						}}
 					>
 						{institution}
+					</FilterBox>
+				))}
+				{typesFilters.map((type, i) => (
+					<FilterBox
+						key={`${type}${i}`}
+						closeClick={() => {
+							const newarr = [...typesFilters];
+							newarr.splice(i, 1);
+							dispatch(setFilters({ types: newarr }));
+						}}
+					>
+						{type}
+					</FilterBox>
+				))}
+				{langFilters.map((lang, i) => (
+					<FilterBox
+						key={`${lang}${i}`}
+						closeClick={() => {
+							const newarr = [...langFilters];
+							newarr.splice(i, 1);
+							dispatch(setFilters({ langs: newarr }));
+						}}
+					>
+						{lang}
 					</FilterBox>
 				))}
 			</div>

@@ -40,6 +40,10 @@ const Select = ({ name, options, activeOptions, setActiveOptions }: IProps) => {
 	};
 
 	useEffect(() => {
+		setFilterOptions(options);
+	}, [options]);
+
+	useEffect(() => {
 		setSelOptions(activeOptions);
 	}, [activeOptions]);
 
@@ -54,7 +58,11 @@ const Select = ({ name, options, activeOptions, setActiveOptions }: IProps) => {
 					placeholder={name}
 					onChange={handleChange}
 				/>
-				<SelectArrow className="cursor-pointer absolute right-0 top-1/2 -translate-y-1/2" />
+				<SelectArrow
+					className={`cursor-pointer absolute right-0 top-1/2 -translate-y-1/2 ${
+						show ? "rotate-180" : ""
+					}`}
+				/>
 			</div>
 			{show && (
 				<div

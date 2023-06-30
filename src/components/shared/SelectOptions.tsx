@@ -6,12 +6,20 @@ import useOutsideClick from "../../hooks/useOutsideClick";
 
 interface IProps {
 	name: string;
-	options: string[];
+	options: { name: string; value: string }[];
+	activeOptions: string[];
+	setActiveOptions: (activeOptions: string[]) => void;
 }
 
-const SelectOptions = ({ name, options }: IProps) => {
+const SelectOptions = ({
+	name,
+	options,
+	activeOptions,
+	setActiveOptions,
+}: IProps) => {
 	const [selOptions, setSelOptions] = useState<string[]>([]);
-	const [filterOptions, setFilterOptions] = useState<string[]>(options);
+	const [filterOptions, setFilterOptions] =
+		useState<{ name: string; value: string }[]>(options);
 	const [show, setShow] = useState<boolean>(false);
 
 	const selectRef = useOutsideClick(() => setShow(false));
@@ -29,12 +37,17 @@ const SelectOptions = ({ name, options }: IProps) => {
 	};
 
 	const clickFilter = () => {
+		setActiveOptions(selOptions);
 		setShow(false);
 	};
 
 	useEffect(() => {
 		setFilterOptions(options);
 	}, [options]);
+
+	useEffect(() => {
+		setSelOptions(activeOptions);
+	}, [activeOptions]);
 
 	return (
 		<div className={`relative w-full`}>
@@ -43,7 +56,11 @@ const SelectOptions = ({ name, options }: IProps) => {
 				onClick={() => setShow(!show)}
 			>
 				<div className="capitalize">{name}</div>
-				<SelectArrow className="cursor-pointer absolute right-0 top-1/2 -translate-y-1/2" />
+				<SelectArrow
+					className={`cursor-pointer absolute right-0 top-1/2 -translate-y-1/2 ${
+						show ? "rotate-180" : ""
+					}`}
+				/>
 			</div>
 			{show && (
 				<div
@@ -55,8 +72,9 @@ const SelectOptions = ({ name, options }: IProps) => {
 							<Checkbox
 								key={`${option}${i}`}
 								className="p-2 cursor-pointe"
-								label={option}
-								onChange={() => handleOption(option)}
+								label={option.name}
+								onChange={() => handleOption(option.value)}
+								checked={selOptions.includes(option.value)}
 							/>
 						))}
 					</div>
