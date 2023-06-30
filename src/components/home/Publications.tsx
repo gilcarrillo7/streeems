@@ -34,7 +34,9 @@ const Publications = () => {
 	return (
 		<>
 			{status === "loading" ? (
-				<Loader />
+				<div className="min-h-[calc(100vh-419px)]">
+					<Loader />
+				</div>
 			) : (
 				<>
 					{error && <p className="text-error text-xl text-center">{error}</p>}
