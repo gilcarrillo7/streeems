@@ -21,7 +21,7 @@ const Menu = () => {
 					<div className="flex flex-col gap-4 sm:gap-8 mb-12 sm:mb-0 items-center sm:items-start">
 						<a
 							href="#"
-							onClick={() => handleNav("/")}
+							onClick={() => handleNav("/library")}
 							className="hover:underline"
 						>
 							<Trans>menu.t2</Trans>

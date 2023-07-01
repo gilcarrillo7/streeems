@@ -1,12 +1,31 @@
 import * as React from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import Layout from "../components/layout/Layout";
 import { HeadFC, PageProps, graphql } from "gatsby";
 import Input from "../components/shared/Input";
 import Button from "../components/shared/Button";
+import Pencil from "../components/icons/Pencil";
+
+const Publication = ({ text, date }: { text: string; date: string }) => {
+	return (
+		<div className="flex items-center gap-4 w-full text-comp1">
+			<div className="flex p-4 border border-comp1 gap-4">
+				<div className="">{text}</div>
+				<div className="">{date}</div>
+			</div>
+			<Pencil className="cursor-pointer" />
+		</div>
+	);
+};
 
 const Profile: React.FC<PageProps> = () => {
-	const { t } = useTranslation();
+	const publications = [
+		{ text: "Kühle Gebäude im Sommer - Anforderunge", date: "18.03.2023" },
+		{ text: "Kühle Gebäude im Sommer - Anforderunge", date: "18.03.2023" },
+		{ text: "Kühle Gebäude im Sommer - Anforderunge", date: "18.03.2023" },
+		{ text: "Kühle Gebäude im Sommer - Anforderunge", date: "18.03.2023" },
+		{ text: "Kühle Gebäude im Sommer - Anforderunge", date: "18.03.2023" },
+	];
 	return (
 		<Layout>
 			<div
@@ -66,6 +85,17 @@ const Profile: React.FC<PageProps> = () => {
 								</div>
 							</div>
 						</form>
+						<div className="flex justify-center">
+							<div className="flex flex-col my-8 mx-auto">
+								{publications.map((pub, i) => (
+									<Publication
+										key={`${i}pub`}
+										text={pub.text}
+										date={pub.date}
+									/>
+								))}
+							</div>
+						</div>
 					</div>
 					<div className="z-10 lg:w-1/2 sm:py-6 mt-12 lg:mt-0 -mx-4 sm:mx-0 px-4 sm:px-0 bg-primary text-white flex items-center">
 						<div className="px-4 lg:pl-8 py-8 lg:py-0">
@@ -91,7 +121,7 @@ const Profile: React.FC<PageProps> = () => {
 							</p>
 						</div>
 					</div>
-					<div className="hidden sm:block w-full lg:w-1/2 h-2/3 lg:h-full  bg-primary absolute top-1/2 lg:top-0 left-0 lg:left-1/2 -translate-y-6 lg:translate-y-0 z-0"></div>
+					<div className="hidden sm:block w-full lg:w-1/2 h-1/2 lg:h-full bg-primary absolute top-1/2 lg:top-0 left-0 lg:left-1/2 translate-y-[15%] lg:translate-y-0 z-0"></div>
 				</div>
 			</div>
 		</Layout>
