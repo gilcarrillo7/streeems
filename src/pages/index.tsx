@@ -1,16 +1,26 @@
 import * as React from "react";
 import { HeadFC, PageProps, graphql, navigate } from "gatsby";
 import { Trans } from "gatsby-plugin-react-i18next";
-import { selectLogged } from "../features/ui/uiSlice";
-import { useAppSelector } from "../hooks";
+import {
+	selectLogged,
+	selectToken,
+	fetchUserInfo,
+} from "../features/auth/AuthSlice";
+import { useAppSelector, useAppDispatch } from "../hooks";
 import Layout from "../components/layout/Layout";
 import Button from "../components/shared/Button";
 import Publications from "../components/home/Publications";
 import Dossiers from "../components/home/Dossiers";
-import CircleChart from "../components/home/CircleChart";
 
 const IndexPage: React.FC<PageProps> = () => {
+	const dispatch = useAppDispatch();
 	const logged = useAppSelector(selectLogged);
+	const token = useAppSelector(selectToken);
+
+	React.useEffect(() => {
+		if (token !== "") dispatch(fetchUserInfo(token));
+	}, [token]);
+
 	return (
 		<Layout>
 			{logged ? (

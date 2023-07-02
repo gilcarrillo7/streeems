@@ -1,7 +1,7 @@
 import React from "react";
 import { Trans, useI18next } from "gatsby-plugin-react-i18next";
 import { IPublication } from "../../interfaces";
-import { selectLogged } from "../../features/ui/uiSlice";
+import { selectLogged } from "../../features/auth/AuthSlice";
 import { useAppSelector } from "../../hooks";
 import { getMonthYear } from "../../utils";
 

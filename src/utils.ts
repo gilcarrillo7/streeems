@@ -1,4 +1,4 @@
-export const getMonthYear = (date: Date, lang: string) => {
+export const getMonthYear = (date: string, lang: string) => {
 	return new Intl.DateTimeFormat(lang === "de" ? "de-DE" : "en-US", {
 		month: "long",
 		year: "numeric",

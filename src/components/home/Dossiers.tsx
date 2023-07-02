@@ -4,7 +4,6 @@ import {
 	selectDossiers,
 	selectError,
 	selectStatus,
-	selectWidth,
 } from "../../features/dossiers/DossiersSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import Loader from "../shared/Loader";

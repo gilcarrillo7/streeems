@@ -9,7 +9,7 @@ import {
 	selectStatus,
 	selectCurrentPage,
 } from "../../features/publications/publicationsSlice";
-import { selectLogged } from "../../features/ui/uiSlice";
+import { selectLogged } from "../../features/auth/AuthSlice";
 import Loader from "../shared/Loader";
 import Publication from "./Publication";
 import Filters from "./Filters";

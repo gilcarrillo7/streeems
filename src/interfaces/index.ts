@@ -3,3 +3,8 @@ export { default as IPublicationResponse } from "./IPublicationResponse";
 export { default as IDossier } from "./IDossier";
 export { default as IDossierResponse } from "./IDossierResponse";
 export { default as IInstitution } from "./IInstitution";
+export { default as ISignUpResponse } from "./ISignUpResponse";
+export { default as ISignupPayload } from "./ISignupPayload";
+export { default as IUserInfoResponse } from "./IUserInfoResponse";
+export { default as IActivationPayload } from "./IActivationPayload";
+export { default as ILoginResponse } from "./ILoginResponse";

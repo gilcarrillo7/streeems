@@ -3,14 +3,16 @@ import { Trans } from "gatsby-plugin-react-i18next";
 import { navigate } from "gatsby";
 import { Helmet } from "react-helmet";
 import {
-	setLoginModal,
 	setMenuOpen,
 	setSearchClicked,
-	selectLoginModal,
-	selectLogged,
 	selectMenuOpen,
 	selectSearchClicked,
 } from "../../features/ui/uiSlice";
+import {
+	setLoginModal,
+	selectLoginModal,
+	selectLogged,
+} from "../../features/auth/AuthSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 
 import Logo from "../../images/logo.svg";

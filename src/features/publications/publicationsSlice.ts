@@ -97,7 +97,6 @@ const applyFilters = (
 	}
 	if (dateFrom) {
 		const from = new Date(Date.parse(dateFrom)).getTime();
-		console.log(from);
 		filteredPubs = filteredPubs.filter(
 			(pub) => new Date(Date.parse(pub.date)).getTime() >= from
 		);
@@ -192,7 +191,7 @@ export const selectError = (state: RootState) => state.publications.error;
 export const selectPublications = (state: RootState) =>
 	state.publications.publications;
 export const selectHomePublications = (state: RootState) =>
-	state.ui.logged
+	state.auth.logged
 		? state.publications.filterPublications
 		: state.publications.publications.slice(0, 9);
 export const selectPieChart = (state: RootState) => state.publications.pieChart;
