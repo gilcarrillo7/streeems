@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
 import {
+	IFavPublicationResponse,
 	IFavouritePayload,
 	IPublication,
 	IPublicationResponse,
@@ -33,8 +34,10 @@ interface PublicationsState {
 	status: "loading" | "idle";
 	error: string | null;
 	publications: IPublication[];
-	favourites: string[];
 	filterPublications: IPublication[];
+	favourites: string[];
+	favPublications: IPublication[];
+	favFilterPublications: IPublication[];
 	count: number;
 	next: string | null;
 	previous: string | null;
@@ -45,6 +48,7 @@ interface PublicationsState {
 	};
 	currentPage: number;
 	filters: TypeFilter;
+	favFilters: TypeFilter;
 }
 
 // Define the initial state using that type
@@ -52,8 +56,10 @@ const initialState: PublicationsState = {
 	status: "idle",
 	error: null,
 	publications: [],
-	favourites: [],
 	filterPublications: [],
+	favourites: [],
+	favPublications: [],
+	favFilterPublications: [],
 	count: 0,
 	next: null,
 	previous: null,
@@ -64,6 +70,15 @@ const initialState: PublicationsState = {
 	},
 	currentPage: 1,
 	filters: {
+		title: "",
+		journals: [],
+		institutions: [],
+		types: [],
+		langs: [],
+		dateFrom: "",
+		dateTo: "",
+	},
+	favFilters: {
 		title: "",
 		journals: [],
 		institutions: [],
@@ -143,6 +158,13 @@ export const publicationsSlice = createSlice({
 				state.filters
 			);
 		},
+		setFavFilters: (state, { payload }) => {
+			state.favFilters = { ...state.favFilters, ...payload };
+			state.favFilterPublications = applyFilters(
+				state.favPublications,
+				state.favFilters
+			);
+		},
 	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchPublications.pending, (state) => {
@@ -181,6 +203,34 @@ export const publicationsSlice = createSlice({
 			state.status = "idle";
 		});
 		builder.addCase(fetchPublications.rejected, (state, { payload }) => {
+			if (payload) state.error = payload.message;
+			state.status = "idle";
+		});
+		builder.addCase(fetchFavouriteList.pending, (state) => {
+			state.status = "loading";
+			state.error = null;
+		});
+		builder.addCase(fetchFavouriteList.fulfilled, (state, { payload }) => {
+			if (payload.detail) state.error = payload.detail;
+			else {
+				state.favPublications = [];
+				state.favPublications.push(
+					...payload.results.map((res) => ({
+						...res.publication,
+						favourite: false,
+					}))
+				);
+				state.favFilterPublications = applyFilters(
+					state.favPublications,
+					state.favFilters
+				);
+				state.count = payload.count;
+				state.next = payload.next ? payload.next.split("=")[1] : "";
+				state.previous = payload.previous;
+			}
+			state.status = "idle";
+		});
+		builder.addCase(fetchFavouriteList.rejected, (state, { payload }) => {
 			if (payload) state.error = payload.message;
 			state.status = "idle";
 		});
@@ -283,7 +333,24 @@ export const fetchFavPublications = createAsyncThunk<
 	return data;
 });
 
-export const { setCurrentPage, setFilters } = publicationsSlice.actions;
+export const fetchFavouriteList = createAsyncThunk<
+	IFavPublicationResponse,
+	{ token: string; page: number },
+	{ rejectValue: FetchError }
+>("fetchFavouriteList", async ({ token, page }) => {
+	const response = await fetch(`${BASE_URL}/${FAVOURITE}/?page=${page}`, {
+		headers: {
+			Accept: "application/json",
+			"Content-Type": "application/json",
+			Authorization: `Token ${token}`,
+		},
+	});
+	const data = await response.json();
+	return data;
+});
+
+export const { setCurrentPage, setFilters, setFavFilters } =
+	publicationsSlice.actions;
 
 export const selectStatus = (state: RootState) => state.publications.status;
 export const selectCount = (state: RootState) => state.publications.count;
@@ -294,10 +361,14 @@ export const selectHomePublications = (state: RootState) =>
 	state.auth.logged
 		? state.publications.filterPublications
 		: state.publications.publications.slice(0, 9);
+export const selectFavFilterPublications = (state: RootState) =>
+	state.publications.favFilterPublications;
 export const selectPieChart = (state: RootState) => state.publications.pieChart;
 export const selectCurrentPage = (state: RootState) =>
 	state.publications.currentPage;
 export const selectFilters = (state: RootState) => state.publications.filters;
+export const selectFavFilters = (state: RootState) =>
+	state.publications.favFilters;
 export const selectFavourites = (state: RootState) =>
 	state.publications.favourites;
 export const selectPubFavourites = (state: RootState) =>

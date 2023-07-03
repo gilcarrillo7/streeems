@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-
 import {
 	fetchDossiers,
 	selectJournals,
@@ -12,7 +11,9 @@ import {
 } from "../../features/institutions/InstitutionsSlice";
 import {
 	setFilters,
+	setFavFilters,
 	selectFilters,
+	selectFavFilters,
 } from "../../features/publications/publicationsSlice";
 import { selectSearchClicked } from "../../features/ui/uiSlice";
 import Lupa from "../icons/Lupa";
@@ -60,7 +61,7 @@ const FilterBox = ({
 	);
 };
 
-const Filters = () => {
+const Filters = ({ isInFavourite }: { isInFavourite: boolean }) => {
 	const { t } = useTranslation();
 	const dispatch = useAppDispatch();
 
@@ -75,7 +76,7 @@ const Filters = () => {
 		langs: langFilters,
 		dateFrom,
 		dateTo,
-	} = useAppSelector(selectFilters);
+	} = useAppSelector(isInFavourite ? selectFavFilters : selectFilters);
 
 	const searchRef = useRef<HTMLInputElement>(null);
 
@@ -85,31 +86,105 @@ const Filters = () => {
 	}, []);
 
 	const handleSearch = () => {
-		dispatch(setFilters({ title: searchRef.current?.value }));
+		dispatch(
+			isInFavourite
+				? setFavFilters({ title: searchRef.current?.value })
+				: setFilters({ title: searchRef.current?.value })
+		);
 	};
 
 	const handleJournals = (journals: string[]) => {
-		dispatch(setFilters({ journals }));
+		dispatch(
+			isInFavourite ? setFavFilters({ journals }) : setFilters({ journals })
+		);
 	};
 
 	const handleInstitutions = (institutions: string[]) => {
-		dispatch(setFilters({ institutions }));
+		dispatch(
+			isInFavourite
+				? setFavFilters({ institutions })
+				: setFilters({ institutions })
+		);
 	};
 
 	const handleTypes = (types: string[]) => {
-		dispatch(setFilters({ types }));
+		dispatch(isInFavourite ? setFavFilters({ types }) : setFilters({ types }));
 	};
 
 	const handleLangs = (langs: string[]) => {
-		dispatch(setFilters({ langs }));
+		dispatch(isInFavourite ? setFavFilters({ langs }) : setFilters({ langs }));
 	};
 
 	const handleDateFrom = (dateFrom: string) => {
-		dispatch(setFilters({ dateFrom }));
+		dispatch(
+			isInFavourite ? setFavFilters({ dateFrom }) : setFilters({ dateFrom })
+		);
 	};
 
 	const handleDateTo = (dateTo: string) => {
-		dispatch(setFilters({ dateTo }));
+		dispatch(
+			isInFavourite ? setFavFilters({ dateTo }) : setFilters({ dateTo })
+		);
+	};
+
+	const clearTitle = () => {
+		dispatch(
+			isInFavourite ? setFavFilters({ title: "" }) : setFilters({ title: "" })
+		);
+	};
+
+	const clearDateFrom = () => {
+		dispatch(
+			isInFavourite
+				? setFavFilters({ dateFrom: "" })
+				: setFilters({ dateFrom: "" })
+		);
+	};
+
+	const clearDateTo = () => {
+		dispatch(
+			isInFavourite ? setFavFilters({ title: "" }) : setFilters({ title: "" })
+		);
+	};
+
+	const clearJournal = (i: number) => {
+		const newarr = [...journalFilters];
+		newarr.splice(i, 1);
+		dispatch(
+			isInFavourite
+				? setFavFilters({ journals: newarr })
+				: setFilters({ journals: newarr })
+		);
+	};
+
+	const clearInstitutions = (i: number) => {
+		const newarr = [...institutionsFilters];
+		newarr.splice(i, 1);
+		dispatch(
+			isInFavourite
+				? setFavFilters({ institutions: newarr })
+				: setFilters({ institutions: newarr })
+		);
+	};
+
+	const clearTypes = (i: number) => {
+		const newarr = [...typesFilters];
+		newarr.splice(i, 1);
+		dispatch(
+			isInFavourite
+				? setFavFilters({ types: newarr })
+				: setFilters({ types: newarr })
+		);
+	};
+
+	const clearLangs = (i: number) => {
+		const newarr = [...langFilters];
+		newarr.splice(i, 1);
+		dispatch(
+			isInFavourite
+				? setFavFilters({ langs: newarr })
+				: setFilters({ langs: newarr })
+		);
 	};
 
 	return (
@@ -190,65 +265,38 @@ const Filters = () => {
 			</div>
 			<div className="flex mt-8 mb-4 gap-2">
 				{tilteFilter != "" && (
-					<FilterBox closeClick={() => dispatch(setFilters({ title: "" }))}>
-						{tilteFilter}
-					</FilterBox>
+					<FilterBox closeClick={clearTitle}>{tilteFilter}</FilterBox>
 				)}
 				{dateFrom && (
-					<FilterBox closeClick={() => dispatch(setFilters({ dateFrom: "" }))}>
+					<FilterBox closeClick={clearDateFrom}>
 						<Trans>von</Trans>: {dateFrom}
 					</FilterBox>
 				)}
 				{dateTo && (
-					<FilterBox closeClick={() => dispatch(setFilters({ dateTo: "" }))}>
+					<FilterBox closeClick={clearDateTo}>
 						<Trans>bis</Trans>: {dateTo}
 					</FilterBox>
 				)}
 				{journalFilters.map((journal, i) => (
-					<FilterBox
-						key={`${journal}${i}`}
-						closeClick={() => {
-							const newarr = [...journalFilters];
-							newarr.splice(i, 1);
-							dispatch(setFilters({ journals: newarr }));
-						}}
-					>
+					<FilterBox key={`${journal}${i}`} closeClick={() => clearJournal(i)}>
 						{journal}
 					</FilterBox>
 				))}
 				{institutionsFilters.map((institution, i) => (
 					<FilterBox
 						key={`${institution}${i}`}
-						closeClick={() => {
-							const newarr = [...institutionsFilters];
-							newarr.splice(i, 1);
-							dispatch(setFilters({ institutions: newarr }));
-						}}
+						closeClick={() => clearInstitutions(i)}
 					>
 						{institution}
 					</FilterBox>
 				))}
 				{typesFilters.map((type, i) => (
-					<FilterBox
-						key={`${type}${i}`}
-						closeClick={() => {
-							const newarr = [...typesFilters];
-							newarr.splice(i, 1);
-							dispatch(setFilters({ types: newarr }));
-						}}
-					>
+					<FilterBox key={`${type}${i}`} closeClick={() => clearTypes(i)}>
 						{type}
 					</FilterBox>
 				))}
 				{langFilters.map((lang, i) => (
-					<FilterBox
-						key={`${lang}${i}`}
-						closeClick={() => {
-							const newarr = [...langFilters];
-							newarr.splice(i, 1);
-							dispatch(setFilters({ langs: newarr }));
-						}}
-					>
+					<FilterBox key={`${lang}${i}`} closeClick={() => clearLangs(i)}>
 						{lang}
 					</FilterBox>
 				))}

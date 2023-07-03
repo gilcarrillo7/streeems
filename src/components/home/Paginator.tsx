@@ -54,7 +54,7 @@ const Paginator = () => {
 		let max = 0;
 		if (currentPage <= 10) {
 			min = 1;
-			max = 10;
+			max = maxPages < 10 ? maxPages : 10;
 		} else if (currentPage + 10 > maxPages) {
 			min = maxPages - 10;
 			max = maxPages;

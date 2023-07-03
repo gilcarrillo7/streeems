@@ -3,9 +3,8 @@ import { HeadFC, PageProps, graphql } from "gatsby";
 import { useAppSelector, useAppDispatch } from "../hooks";
 import { selectToken } from "../features/auth/AuthSlice";
 import {
-	fetchPublications,
-	fetchFavPublications,
-	selectPubFavourites,
+	fetchFavouriteList,
+	selectFavFilterPublications,
 } from "../features/publications/publicationsSlice";
 import Layout from "../components/layout/Layout";
 import Publications from "../components/home/Publications";
@@ -13,13 +12,10 @@ import Publications from "../components/home/Publications";
 const LibraryPage: React.FC<PageProps> = () => {
 	const dispatch = useAppDispatch();
 	const token = useAppSelector(selectToken);
-	const publications = useAppSelector(selectPubFavourites);
+	const publications = useAppSelector(selectFavFilterPublications);
 
 	useEffect(() => {
-		if (token) {
-			dispatch(fetchFavPublications(token));
-			dispatch(fetchPublications(1));
-		}
+		if (token) dispatch(fetchFavouriteList({ token, page: 1 }));
 	}, [token]);
 
 	return (

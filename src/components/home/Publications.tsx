@@ -43,7 +43,7 @@ const Publications = ({
 					{error && <p className="text-error text-xl text-center">{error}</p>}
 					{!error && (
 						<>
-							{logged && <Filters />}
+							{logged && <Filters isInFavourite={isInFavourite} />}
 							{logged ? (
 								<p className="text-primary my-4 sm:my-8 text-lg sm:text-xl">
 									{isInFavourite ? (
@@ -80,7 +80,7 @@ const Publications = ({
 									/>
 								))}
 							</div>
-							{logged && !isInFavourite && <Paginator />}
+							{logged && <Paginator />}
 						</>
 					)}
 				</>
