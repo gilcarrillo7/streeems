@@ -8,3 +8,4 @@ export const ACTIVATION = "activation";
 export const TOKEN = "token";
 export const LOGIN = "login";
 export const ME = "me";
+export const FAVOURITE = "favourite-publications";

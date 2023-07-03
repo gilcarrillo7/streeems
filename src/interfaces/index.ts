@@ -8,3 +8,4 @@ export { default as ISignupPayload } from "./ISignupPayload";
 export { default as IUserInfoResponse } from "./IUserInfoResponse";
 export { default as IActivationPayload } from "./IActivationPayload";
 export { default as ILoginResponse } from "./ILoginResponse";
+export { default as IFavouritePayload } from "./IFavouritePayload";

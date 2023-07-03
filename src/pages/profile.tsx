@@ -1,5 +1,7 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { Trans } from "react-i18next";
+import { useAppSelector, useAppDispatch } from "../hooks";
+import { selectUserInfo } from "../features/auth/AuthSlice";
 import Layout from "../components/layout/Layout";
 import { HeadFC, PageProps, graphql } from "gatsby";
 import Input from "../components/shared/Input";
@@ -19,6 +21,8 @@ const Publication = ({ text, date }: { text: string; date: string }) => {
 };
 
 const Profile: React.FC<PageProps> = () => {
+	const dispatch = useAppDispatch();
+	const userInfo = useAppSelector(selectUserInfo);
 	const publications = [
 		{ text: "Kühle Gebäude im Sommer - Anforderunge", date: "18.03.2023" },
 		{ text: "Kühle Gebäude im Sommer - Anforderunge", date: "18.03.2023" },
@@ -26,6 +30,26 @@ const Profile: React.FC<PageProps> = () => {
 		{ text: "Kühle Gebäude im Sommer - Anforderunge", date: "18.03.2023" },
 		{ text: "Kühle Gebäude im Sommer - Anforderunge", date: "18.03.2023" },
 	];
+
+	const [info, setInfo] = useState({ name: "", email: "", password: "" });
+
+	useEffect(() => {
+		if (userInfo)
+			setInfo({
+				name: userInfo.first_name,
+				email: userInfo.email,
+				password: "",
+			});
+	}, [userInfo]);
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setInfo({ ...info, [e.target.name]: e.target.value });
+	};
+
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+	};
+
 	return (
 		<Layout>
 			<div
@@ -39,7 +63,7 @@ const Profile: React.FC<PageProps> = () => {
 						<h2 className="text-comp1 text-xl sm:text-2xl font-bold mb-6">
 							<Trans>profile.t2</Trans>
 						</h2>
-						<form className="">
+						<form className="" onSubmit={handleSubmit}>
 							<div className="flex mb-4">
 								<div className="flex items-end w-1/3 text-lg sm:text-xl">
 									<Trans>profile.t3</Trans>
@@ -47,8 +71,12 @@ const Profile: React.FC<PageProps> = () => {
 								<div className="w-2/3">
 									<Input
 										type={"text"}
+										name="name"
 										className={"border-0 border-b-2 border-primary"}
 										placeholder={""}
+										value={info.name}
+										onChange={handleChange}
+										required={true}
 									/>
 								</div>
 							</div>
@@ -59,8 +87,12 @@ const Profile: React.FC<PageProps> = () => {
 								<div className="w-2/3">
 									<Input
 										type={"text"}
+										name="email"
 										className={"border-0 border-b-2 border-primary"}
 										placeholder={""}
+										value={info.email}
+										onChange={handleChange}
+										required={true}
 									/>
 								</div>
 							</div>
@@ -70,16 +102,20 @@ const Profile: React.FC<PageProps> = () => {
 								</div>
 								<div className="w-2/3">
 									<Input
-										type={"text"}
+										type={"password"}
+										name="password"
 										className={"border-0 border-b-2 border-primary"}
 										placeholder={""}
+										onChange={handleChange}
+										value={info.password}
+										required={true}
 									/>
 								</div>
 							</div>
 							<div className="flex mt-16 md:mt-8 justify-center">
 								<div className="sm:w-1/3"></div>
 								<div className="w-4/5 sm:w-2/3">
-									<Button variant="primary" className="w-full">
+									<Button type="submit" variant="primary" className="w-full">
 										<Trans>profile.t6</Trans>
 									</Button>
 								</div>

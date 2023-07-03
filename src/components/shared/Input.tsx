@@ -9,6 +9,7 @@ const Input = ({
 	refer,
 	required,
 	min,
+	value,
 }: {
 	type: string;
 	name?: string;
@@ -18,6 +19,7 @@ const Input = ({
 	refer?: React.LegacyRef<HTMLInputElement>;
 	required?: boolean;
 	min?: number;
+	value?: string | number;
 }) => {
 	return (
 		<input
@@ -29,6 +31,7 @@ const Input = ({
 			onChange={onChange}
 			required={required}
 			min={min}
+			value={value}
 		/>
 	);
 };

@@ -1,7 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
-import { IPublication, IPublicationResponse } from "../../interfaces";
-import { BASE_URL, PUBLICATIONS } from "../../constants";
+import {
+	IFavouritePayload,
+	IPublication,
+	IPublicationResponse,
+} from "../../interfaces";
+import {
+	AUTH,
+	BASE_URL,
+	FAVOURITE,
+	PUBLICATIONS,
+	USERS,
+} from "../../constants";
 import { getDossierColor } from "../../utils";
 
 type FetchError = {
@@ -23,6 +33,7 @@ interface PublicationsState {
 	status: "loading" | "idle";
 	error: string | null;
 	publications: IPublication[];
+	favourites: string[];
 	filterPublications: IPublication[];
 	count: number;
 	next: string | null;
@@ -41,6 +52,7 @@ const initialState: PublicationsState = {
 	status: "idle",
 	error: null,
 	publications: [],
+	favourites: [],
 	filterPublications: [],
 	count: 0,
 	next: null,
@@ -141,7 +153,9 @@ export const publicationsSlice = createSlice({
 			if (payload.detail) state.error = payload.detail;
 			else {
 				state.publications = [];
-				state.publications.push(...payload.results);
+				state.publications.push(
+					...payload.results.map((pub) => ({ ...pub, favourite: false }))
+				);
 				state.filterPublications = applyFilters(
 					state.publications,
 					state.filters
@@ -170,6 +184,39 @@ export const publicationsSlice = createSlice({
 			if (payload) state.error = payload.message;
 			state.status = "idle";
 		});
+		builder.addCase(fetchFavPublications.pending, (state) => {
+			state.status = "loading";
+			state.error = null;
+		});
+		builder.addCase(fetchFavPublications.fulfilled, (state, { payload }) => {
+			// state.favourites = state.publications.filter((pub) =>
+			// 	payload.includes(pub.id)
+			// );
+			state.favourites = payload;
+			state.status = "idle";
+		});
+		builder.addCase(fetchFavPublications.rejected, (state, { payload }) => {
+			if (payload) state.error = payload.message;
+			state.status = "idle";
+		});
+		builder.addCase(postFavourite.pending, (state) => {
+			state.error = null;
+		});
+		builder.addCase(postFavourite.fulfilled, (state, { payload }) => {
+			state.favourites.push(payload.publication);
+		});
+		builder.addCase(postFavourite.rejected, (state, { payload }) => {
+			if (payload) state.error = payload.message;
+		});
+		builder.addCase(deleteFavourite.pending, (state) => {
+			state.error = null;
+		});
+		builder.addCase(deleteFavourite.fulfilled, (state, { payload }) => {
+			state.status = "idle";
+		});
+		builder.addCase(deleteFavourite.rejected, (state, { payload }) => {
+			if (payload) state.error = payload.message;
+		});
 	},
 });
 
@@ -179,6 +226,59 @@ export const fetchPublications = createAsyncThunk<
 	{ rejectValue: FetchError }
 >("publications", async (page: number) => {
 	const response = await fetch(`${BASE_URL}/${PUBLICATIONS}/?page=${page}`);
+	const data = await response.json();
+	return data;
+});
+
+export const postFavourite = createAsyncThunk<
+	IFavouritePayload,
+	{ publication: string; token: string },
+	{ rejectValue: FetchError }
+>("postFavourite", async ({ publication, token }) => {
+	const response = await fetch(`${BASE_URL}/${FAVOURITE}/`, {
+		method: "POST",
+		headers: {
+			Accept: "application/json",
+			"Content-Type": "application/json",
+			Authorization: `Token ${token}`,
+		},
+		body: JSON.stringify({
+			publication,
+		}),
+	});
+	const data = await response.json();
+	return data;
+});
+
+export const deleteFavourite = createAsyncThunk<
+	void,
+	{ publication: string; token: string },
+	{ rejectValue: FetchError }
+>("deleteFavourite", async ({ publication, token }) => {
+	const response = await fetch(`${BASE_URL}/${FAVOURITE}/${publication}/`, {
+		method: "DELETE",
+		headers: {
+			Accept: "application/json",
+			"Content-Type": "application/json",
+			Authorization: `Token ${token}`,
+		},
+	});
+	const data = await response.json();
+	return data;
+});
+
+export const fetchFavPublications = createAsyncThunk<
+	string[],
+	string,
+	{ rejectValue: FetchError }
+>("fetchFavPublications", async (token) => {
+	const response = await fetch(`${BASE_URL}/${AUTH}/${USERS}/${FAVOURITE}/`, {
+		headers: {
+			Accept: "application/json",
+			"Content-Type": "application/json",
+			Authorization: `Token ${token}`,
+		},
+	});
 	const data = await response.json();
 	return data;
 });
@@ -198,5 +298,11 @@ export const selectPieChart = (state: RootState) => state.publications.pieChart;
 export const selectCurrentPage = (state: RootState) =>
 	state.publications.currentPage;
 export const selectFilters = (state: RootState) => state.publications.filters;
+export const selectFavourites = (state: RootState) =>
+	state.publications.favourites;
+export const selectPubFavourites = (state: RootState) =>
+	state.publications.publications.filter((pub) =>
+		state.publications.favourites.includes(pub.id)
+	);
 
 export default publicationsSlice.reducer;

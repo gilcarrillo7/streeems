@@ -218,5 +218,6 @@ export const selectLoginModal = (state: RootState) => state.auth.loginModal;
 export const selectError = (state: RootState) => state.auth.error;
 export const selectConfirmMail = (state: RootState) => state.auth.confirmMail;
 export const selectToken = (state: RootState) => state.auth.token;
+export const selectUserInfo = (state: RootState) => state.auth.userInfo;
 
 export default authSlice.reducer;

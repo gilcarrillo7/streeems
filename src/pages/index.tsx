@@ -1,6 +1,11 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { HeadFC, PageProps, graphql, navigate } from "gatsby";
 import { Trans } from "gatsby-plugin-react-i18next";
+import {
+	fetchPublications,
+	selectHomePublications,
+	fetchFavPublications,
+} from "../features/publications/publicationsSlice";
 import {
 	selectLogged,
 	selectToken,
@@ -16,16 +21,21 @@ const IndexPage: React.FC<PageProps> = () => {
 	const dispatch = useAppDispatch();
 	const logged = useAppSelector(selectLogged);
 	const token = useAppSelector(selectToken);
+	const publications = useAppSelector(selectHomePublications);
 
-	React.useEffect(() => {
-		if (token !== "") dispatch(fetchUserInfo(token));
+	useEffect(() => {
+		if (token !== "") {
+			dispatch(fetchUserInfo(token));
+			dispatch(fetchFavPublications(token));
+		}
+		dispatch(fetchPublications(1));
 	}, [token]);
 
 	return (
 		<Layout>
 			{logged ? (
 				<div className="container text-comp1 py-12">
-					<Publications />
+					<Publications publications={publications} />
 				</div>
 			) : (
 				<>
@@ -69,7 +79,7 @@ const IndexPage: React.FC<PageProps> = () => {
 						<p className="my-8 sm:my-16 text-xl sm:text-3xl font-light">
 							<Trans>home.t3</Trans>
 						</p>
-						<Publications />
+						<Publications publications={publications} />
 						<div className="flex flex-col sm:flex-row items-center">
 							<p className="my-8 sm:my-16 text-xl sm:text-3xl font-light sm:w-2/3">
 								<Trans>home.t4</Trans>

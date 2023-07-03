@@ -15,6 +15,7 @@ export default interface IPublication {
 	feedback: unknown;
 	created: string;
 	modified: string;
+	favourite: boolean;
 }
 export enum Content {
 	Tbd = "tbd",
