@@ -19,7 +19,7 @@ import { selectSearchClicked } from "../../features/ui/uiSlice";
 import Lupa from "../icons/Lupa";
 import Input from "../shared/Input";
 import Button from "../shared/Button";
-import Select from "../shared/Select";
+import SelectMultiple from "../shared/SelectMultiple";
 import SelectOptions from "../shared/SelectOptions";
 import SelectDate from "../shared/SelectDate";
 
@@ -213,7 +213,7 @@ const Filters = ({ isInFavourite }: { isInFavourite: boolean }) => {
 			)}
 			<div className="flex flex-col sm:flex-row gap-4">
 				<div className="sm:w-1/5">
-					<Select
+					<SelectMultiple
 						name={t("filter.t1")}
 						options={journals}
 						activeOptions={journalFilters}
@@ -230,7 +230,7 @@ const Filters = ({ isInFavourite }: { isInFavourite: boolean }) => {
 					/>
 				</div>
 				<div className="sm:w-1/5">
-					<Select
+					<SelectMultiple
 						name={t("filter.t3")}
 						options={institutions}
 						activeOptions={institutionsFilters}

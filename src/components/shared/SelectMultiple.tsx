@@ -1,49 +1,70 @@
 import React, { useState, useEffect } from "react";
-import useOutsideClick from "../../hooks/useOutsideClick";
+import Button from "./Button";
 import SelectArrow from "./SelectArrow";
+import useOutsideClick from "../../hooks/useOutsideClick";
 
 interface IProps {
 	name: string;
 	options: string[];
-	propName: string;
+	activeOptions: string[];
+	setActiveOptions: (activeOptions: string[]) => void;
 }
-const Select = ({ name, options, propName }: IProps) => {
-	const [selOption, setSelOption] = useState<string>("");
+
+const SelectMultiple = ({
+	name,
+	options,
+	activeOptions,
+	setActiveOptions,
+}: IProps) => {
+	const [selOptions, setSelOptions] = useState<string[]>([]);
 	const [filterOptions, setFilterOptions] = useState<string[]>(options);
 	const [show, setShow] = useState<boolean>(false);
 
 	const selectRef = useOutsideClick(() => setShow(false));
 
 	const handleOption = (opt: string) => {
-		setShow(false);
-		setSelOption(opt);
+		let selected = [...selOptions];
+		const index = selected.findIndex((sel) => sel === opt);
+		if (index === -1) {
+			selected = [...selected, opt];
+			selected.sort();
+		} else {
+			selected.splice(index, 1);
+		}
+		setSelOptions([...selected]);
 	};
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const val = e.target.value;
 		setFilterOptions(options.filter((option) => option.includes(val)));
-		setSelOption(val);
+	};
+
+	const clickFilter = () => {
+		setActiveOptions(selOptions);
+		setShow(false);
 	};
 
 	useEffect(() => {
 		setFilterOptions(options);
 	}, [options]);
 
+	useEffect(() => {
+		setSelOptions(activeOptions);
+	}, [activeOptions]);
+
 	return (
 		<div className={`relative w-full`}>
 			<div
-				className="relative w-full border border-comp1 px-3 py-3 cursor-pointer"
+				className="relative w-full border-b border-primary p-2 cursor-pointer"
 				onClick={() => setShow(!show)}
 			>
 				<input
-					className="capitalize text-comp1 placeholder-comp1 w-full"
+					className="capitalize placeholder:text-comp1 w-full"
 					placeholder={name}
 					onChange={handleChange}
-					value={selOption}
-					name={propName}
 				/>
 				<SelectArrow
-					className={`cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 ${
+					className={`cursor-pointer absolute right-0 top-1/2 -translate-y-1/2 ${
 						show ? "rotate-180" : ""
 					}`}
 				/>
@@ -58,7 +79,7 @@ const Select = ({ name, options, propName }: IProps) => {
 							<div
 								key={`${option}${i}`}
 								className={`p-2 cursor-pointer hover:font-bold capitalize ${
-									selOption === option ? "font-bold" : ""
+									selOptions.includes(option) ? "font-bold" : ""
 								}`}
 								onClick={() => handleOption(option)}
 							>
@@ -66,10 +87,19 @@ const Select = ({ name, options, propName }: IProps) => {
 							</div>
 						))}
 					</div>
+					<div className="px-6 pt-8 pb-12 w-full">
+						<Button
+							variant={"primary"}
+							className="!w-full !px-0 !min-w-full"
+							onClick={clickFilter}
+						>
+							Filter
+						</Button>
+					</div>
 				</div>
 			)}
 		</div>
 	);
 };
 
-export default Select;
+export default SelectMultiple;

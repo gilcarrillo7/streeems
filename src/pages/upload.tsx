@@ -1,14 +1,39 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useAppSelector, useAppDispatch } from "../hooks";
+import {
+	fetchDossiers,
+	selectJournals,
+} from "../features/dossiers/DossiersSlice";
+import {
+	fetchInstitutions,
+	selectInstitutionsName,
+} from "../features/institutions/InstitutionsSlice";
 import Layout from "../components/layout/Layout";
 import { HeadFC, PageProps, graphql } from "gatsby";
 import Input from "../components/shared/Input";
 import Button from "../components/shared/Button";
 
 import Img from "../images/upload.png";
+import Select from "../components/shared/Select";
 
 const Upload: React.FC<PageProps> = () => {
 	const { t } = useTranslation();
+	const dispatch = useAppDispatch();
+
+	const journals = useAppSelector(selectJournals);
+	const institutions = useAppSelector(selectInstitutionsName);
+
+	useEffect(() => {
+		dispatch(fetchDossiers());
+		dispatch(fetchInstitutions());
+	}, []);
+
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		console.log(e);
+	};
+
 	return (
 		<Layout>
 			<div
@@ -19,36 +44,48 @@ const Upload: React.FC<PageProps> = () => {
 						<h1 className="text-primary text-3xl sm:text-4xl font-light mb-6">
 							<Trans>upload.t1</Trans>
 						</h1>
-						<form className="">
+						<form className="" onSubmit={handleSubmit}>
 							<Input
 								type={"text"}
 								className={"mb-4"}
 								placeholder={t("upload.t2")}
+								name="url"
 							/>
 							<Input
 								type={"text"}
 								className={"mb-4"}
 								placeholder={t("upload.t3")}
+								name="title"
 							/>
-							<Button variant="primary" className="mb-12 sm:!w-64">
+							<label
+								id="fileInput"
+								className="cursor-pointer mb-12 min-h-[44px] sm:!w-64 block bg-primary text-white text-center font-bold py-2"
+							>
 								<Trans>upload.t4</Trans>
-							</Button>
-							<Input
-								type={"text"}
-								className={"mb-4"}
-								placeholder={t("upload.t5")}
+								<input id="fileInput" type="file" className="hidden" name="" />
+							</label>
+							<Select
+								name={t("upload.t5")}
+								options={journals}
+								propName="journal"
+							/>
+							<div className="my-4"></div>
+							<Select
+								name={t("upload.t6")}
+								options={institutions}
+								propName="institution"
 							/>
 							<Input
-								type={"text"}
-								className={"mb-4"}
-								placeholder={t("upload.t6")}
-							/>
-							<Input
-								type={"text"}
-								className={"mb-4"}
+								type={"date"}
+								className={"my-4"}
 								placeholder={t("upload.t7")}
+								name="date"
 							/>
-							<Button variant="primary" className=" sm:!w-64">
+							<Button
+								variant="primary"
+								className="w-full sm:!w-64"
+								type="submit"
+							>
 								<Trans>upload.t8</Trans>
 							</Button>
 						</form>
