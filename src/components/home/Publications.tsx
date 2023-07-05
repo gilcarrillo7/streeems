@@ -48,7 +48,7 @@ const Publications = ({
 								<p className="text-primary my-4 sm:my-8 text-lg sm:text-xl">
 									{isInFavourite ? (
 										<>
-											<span className="font-bold">{favourites.length}</span>{" "}
+											<span className="font-bold">{count}</span>{" "}
 											<Trans>publications.t2</Trans>
 										</>
 									) : (

@@ -15,6 +15,7 @@ import {
 	TOKEN,
 	LOGIN,
 	ME,
+	LOGOUT,
 } from "../../constants";
 import { FetchError } from "../../types";
 
@@ -60,7 +61,10 @@ export const authSlice = createSlice({
 			state.error = [];
 		});
 		builder.addCase(fetchUserInfo.fulfilled, (state, { payload }) => {
-			if (payload) {
+			if (payload.detail) {
+				state.logged = false;
+				state.loginModal = false;
+			} else {
 				state.userInfo = payload;
 				state.logged = true;
 				state.loginModal = false;
@@ -69,6 +73,8 @@ export const authSlice = createSlice({
 		});
 		builder.addCase(fetchUserInfo.rejected, (state, { payload }) => {
 			if (payload) state.error.push(payload.message);
+			state.logged = false;
+			state.loginModal = false;
 			state.status = "idle";
 		});
 		builder.addCase(doLogin.pending, (state) => {
@@ -85,6 +91,20 @@ export const authSlice = createSlice({
 		});
 		builder.addCase(doLogin.rejected, (state, { payload }) => {
 			if (payload) state.error.push(payload.message);
+			state.status = "idle";
+		});
+		builder.addCase(doLogout.pending, (state) => {
+			state.status = "loading";
+			state.error = [];
+		});
+		builder.addCase(doLogout.fulfilled, (state) => {
+			state.token = "";
+			state.logged = false;
+			state.status = "idle";
+		});
+		builder.addCase(doLogout.rejected, (state) => {
+			state.token = "";
+			state.logged = false;
 			state.status = "idle";
 		});
 		builder.addCase(doSignUp.pending, (state) => {
@@ -162,6 +182,23 @@ export const doLogin = createAsyncThunk<
 			email,
 			password,
 		}),
+	});
+	const data = await response.json();
+	return data;
+});
+
+export const doLogout = createAsyncThunk<
+	void,
+	string,
+	{ rejectValue: FetchError }
+>("doLogout", async (token) => {
+	const response = await fetch(`${BASE_URL}/${AUTH}/${TOKEN}/${LOGOUT}/`, {
+		method: "POST",
+		headers: {
+			Accept: "application/json",
+			"Content-Type": "application/json",
+			Authorization: `Token ${token}`,
+		},
 	});
 	const data = await response.json();
 	return data;

@@ -2,13 +2,16 @@ import * as React from "react";
 import { Trans } from "gatsby-plugin-react-i18next";
 import { navigate } from "gatsby";
 import { setMenuOpen } from "../../features/ui/uiSlice";
-import { useAppDispatch } from "../../hooks";
+import { selectToken } from "../../features/auth/AuthSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import Instagram from "../icons/Instagram";
 import Linkedin from "../icons/Linkedin";
 import Twitter from "../icons/Twitter";
+import { doLogout } from "../../features/auth/AuthSlice";
 
 const Menu = () => {
 	const dispatch = useAppDispatch();
+	const token = useAppSelector(selectToken);
 
 	const handleNav = (url: string) => {
 		dispatch(setMenuOpen(false));
@@ -47,7 +50,13 @@ const Menu = () => {
 						>
 							<Trans>menu.t5</Trans>
 						</a>
-						<a href="#" className="hover:underline">
+						<a
+							href="#"
+							className="hover:underline"
+							onClick={() => {
+								dispatch(doLogout(token));
+							}}
+						>
 							<Trans>menu.t6</Trans>
 						</a>
 					</div>

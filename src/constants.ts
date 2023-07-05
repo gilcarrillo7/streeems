@@ -9,3 +9,4 @@ export const TOKEN = "token";
 export const LOGIN = "login";
 export const ME = "me";
 export const FAVOURITE = "favourite-publications";
+export const LOGOUT = "logout";

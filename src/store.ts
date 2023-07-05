@@ -12,6 +12,7 @@ import authReducer, { AuthState } from "./features/auth/AuthSlice";
 import publicationsReducer from "./features/publications/publicationsSlice";
 import dossiersReducer from "./features/dossiers/DossiersSlice";
 import institutionssReducer from "./features/institutions/InstitutionsSlice";
+import { navigate } from "gatsby";
 
 const rootReducer = combineReducers({
 	ui: uiReducer,
@@ -33,6 +34,13 @@ const middleware: Middleware<void, CombinedState<{ auth: AuthState }>> =
 			if (token !== "") {
 				localStorage.setItem("token", getState().auth.token);
 			} else localStorage.removeItem("token");
+		}
+		if (
+			action.type === "doLogout/fulfilled" ||
+			action.type === "doLogout/rejected"
+		) {
+			localStorage.removeItem("token");
+			dispatch({ type: "ui/setMenuOpen", payload: false }), navigate("/");
 		}
 		return result;
 	};

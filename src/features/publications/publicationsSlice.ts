@@ -4,6 +4,7 @@ import {
 	IFavPublicationResponse,
 	IFavouritePayload,
 	IPublication,
+	IPublicationPayload,
 	IPublicationResponse,
 } from "../../interfaces";
 import {
@@ -31,7 +32,7 @@ type TypeFilter = {
 
 // Define a type for the slice state
 interface PublicationsState {
-	status: "loading" | "idle";
+	status: "loading" | "idle" | "success";
 	error: string | null;
 	publications: IPublication[];
 	filterPublications: IPublication[];
@@ -242,7 +243,8 @@ export const publicationsSlice = createSlice({
 			// state.favourites = state.publications.filter((pub) =>
 			// 	payload.includes(pub.id)
 			// );
-			state.favourites = payload;
+			if (typeof payload === "object") state.favourites = [];
+			else state.favourites = payload;
 			state.status = "idle";
 		});
 		builder.addCase(fetchFavPublications.rejected, (state, { payload }) => {
@@ -266,6 +268,47 @@ export const publicationsSlice = createSlice({
 		});
 		builder.addCase(deleteFavourite.rejected, (state, { payload }) => {
 			if (payload) state.error = payload.message;
+		});
+		builder.addCase(postPublication.pending, (state) => {
+			state.error = null;
+			state.status = "loading";
+		});
+		builder.addCase(postPublication.fulfilled, (state, { payload }) => {
+			state.status = "idle";
+			if (payload.url)
+				state.error =
+					typeof payload.url === "string" ? payload.url : payload.url.join(" ");
+			else if (payload.date)
+				state.error =
+					typeof payload.date === "string"
+						? payload.date
+						: payload.date.join(" ");
+			else if (payload.institution)
+				state.error =
+					typeof payload.institution === "string"
+						? payload.institution
+						: payload.institution.join(" ");
+			else if (payload.journal)
+				state.error =
+					typeof payload.journal === "string"
+						? payload.journal
+						: payload.journal.join(" ");
+			else if (payload.title)
+				state.error =
+					typeof payload.title === "string"
+						? payload.title
+						: payload.title.join(" ");
+			else if (payload.header_image)
+				state.error =
+					typeof payload.header_image === "string"
+						? payload.header_image
+						: payload.header_image.join(" ");
+			else state.status = "success";
+		});
+		builder.addCase(postPublication.rejected, (state, { payload }) => {
+			if (payload) state.error = payload.message;
+			state.error = "An error ocurred.";
+			state.status = "idle";
 		});
 	},
 });
@@ -318,7 +361,7 @@ export const deleteFavourite = createAsyncThunk<
 });
 
 export const fetchFavPublications = createAsyncThunk<
-	string[],
+	string[] | { detail: string },
 	string,
 	{ rejectValue: FetchError }
 >("fetchFavPublications", async (token) => {
@@ -344,6 +387,26 @@ export const fetchFavouriteList = createAsyncThunk<
 			"Content-Type": "application/json",
 			Authorization: `Token ${token}`,
 		},
+	});
+	const data = await response.json();
+	return data;
+});
+
+export const postPublication = createAsyncThunk<
+	IPublicationPayload,
+	{ payload: IPublicationPayload; token: string },
+	{ rejectValue: FetchError }
+>("postPublication", async ({ payload, token }) => {
+	const response = await fetch(`${BASE_URL}/${PUBLICATIONS}/`, {
+		method: "POST",
+		headers: {
+			Accept: "application/json",
+			"Content-Type": "application/json",
+			Authorization: `Token ${token}`,
+		},
+		body: JSON.stringify({
+			...payload,
+		}),
 	});
 	const data = await response.json();
 	return data;

@@ -9,13 +9,20 @@ import {
 	fetchInstitutions,
 	selectInstitutionsName,
 } from "../features/institutions/InstitutionsSlice";
+import {
+	postPublication,
+	selectStatus,
+	selectError,
+} from "../features/publications/publicationsSlice";
+import { selectToken } from "../features/auth/AuthSlice";
 import Layout from "../components/layout/Layout";
 import { HeadFC, PageProps, graphql } from "gatsby";
 import Input from "../components/shared/Input";
 import Button from "../components/shared/Button";
+import Select from "../components/shared/Select";
 
 import Img from "../images/upload.png";
-import Select from "../components/shared/Select";
+import Loader from "../components/shared/Loader";
 
 const Upload: React.FC<PageProps> = () => {
 	const { t } = useTranslation();
@@ -23,6 +30,9 @@ const Upload: React.FC<PageProps> = () => {
 
 	const journals = useAppSelector(selectJournals);
 	const institutions = useAppSelector(selectInstitutionsName);
+	const token = useAppSelector(selectToken);
+	const status = useAppSelector(selectStatus);
+	const error = useAppSelector(selectError);
 
 	useEffect(() => {
 		dispatch(fetchDossiers());
@@ -31,7 +41,29 @@ const Upload: React.FC<PageProps> = () => {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log(e);
+
+		const url = (e.currentTarget.elements[0] as HTMLInputElement).value;
+		const title = (e.currentTarget.elements[1] as HTMLInputElement).value;
+		//const header_image = (e.currentTarget.elements[2] as HTMLInputElement).value;
+		const journal = (e.currentTarget.elements[3] as HTMLInputElement).value;
+		const institution = (e.currentTarget.elements[4] as HTMLInputElement).value;
+		const date = (e.currentTarget.elements[5] as HTMLInputElement).value;
+
+		dispatch(
+			postPublication({
+				payload: {
+					url,
+					title,
+					journal: journal.charAt(0).toUpperCase() + journal.slice(1),
+					institution:
+						institution.charAt(0).toUpperCase() + institution.slice(1),
+					date,
+					content: "tbd",
+					excerpt: "tbd",
+				},
+				token,
+			})
+		);
 	};
 
 	return (
@@ -50,12 +82,14 @@ const Upload: React.FC<PageProps> = () => {
 								className={"mb-4"}
 								placeholder={t("upload.t2")}
 								name="url"
+								required={true}
 							/>
 							<Input
 								type={"text"}
 								className={"mb-4"}
 								placeholder={t("upload.t3")}
 								name="title"
+								required={true}
 							/>
 							<label
 								id="fileInput"
@@ -68,26 +102,38 @@ const Upload: React.FC<PageProps> = () => {
 								name={t("upload.t5")}
 								options={journals}
 								propName="journal"
+								required={true}
 							/>
 							<div className="my-4"></div>
 							<Select
 								name={t("upload.t6")}
 								options={institutions}
 								propName="institution"
+								required={true}
 							/>
 							<Input
 								type={"date"}
 								className={"my-4"}
 								placeholder={t("upload.t7")}
 								name="date"
+								required={true}
 							/>
-							<Button
-								variant="primary"
-								className="w-full sm:!w-64"
-								type="submit"
-							>
-								<Trans>upload.t8</Trans>
-							</Button>
+							{status === "idle" ? (
+								<Button
+									variant="primary"
+									className="w-full sm:!w-64"
+									type="submit"
+								>
+									<Trans>upload.t8</Trans>
+								</Button>
+							) : status === "loading" ? (
+								<Loader />
+							) : (
+								<div className="text-lg text-primary">Success</div>
+							)}
+							{error !== "" && (
+								<div className="text-sm mb-4 text-error">{error}</div>
+							)}
 						</form>
 					</div>
 					<div className="hidden sm:block w-1/2 absolute top-0 left-0 bg-white z-10 min-h-full"></div>

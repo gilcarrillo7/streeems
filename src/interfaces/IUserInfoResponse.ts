@@ -10,4 +10,5 @@ export default interface IUserInfoResponse {
 	is_reviewer: boolean;
 	uid?: string[];
 	token?: string[];
+	detail?: string;
 }

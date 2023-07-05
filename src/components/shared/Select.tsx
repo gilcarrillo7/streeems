@@ -6,8 +6,9 @@ interface IProps {
 	name: string;
 	options: string[];
 	propName: string;
+	required: boolean;
 }
-const Select = ({ name, options, propName }: IProps) => {
+const Select = ({ name, options, propName, required }: IProps) => {
 	const [selOption, setSelOption] = useState<string>("");
 	const [filterOptions, setFilterOptions] = useState<string[]>(options);
 	const [show, setShow] = useState<boolean>(false);
@@ -41,6 +42,7 @@ const Select = ({ name, options, propName }: IProps) => {
 					onChange={handleChange}
 					value={selOption}
 					name={propName}
+					required={required}
 				/>
 				<SelectArrow
 					className={`cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 ${

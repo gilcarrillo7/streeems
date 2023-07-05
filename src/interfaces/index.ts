@@ -11,3 +11,4 @@ export { default as ILoginResponse } from "./ILoginResponse";
 export { default as IFavouritePayload } from "./IFavouritePayload";
 export { default as IFavPublicationResponse } from "./IFavPublicationResponse";
 export { default as IFavResult } from "./IFavResult";
+export { default as IPublicationPayload } from "./IPublicationPayload";
