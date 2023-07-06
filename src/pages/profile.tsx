@@ -112,7 +112,7 @@ const Profile: React.FC<PageProps> = () => {
 									/>
 								</div>
 							</div>
-							<div className="flex mt-16 md:mt-8 justify-center">
+							<div className="flex mt-16 md:mt-8 mb-8 justify-center">
 								<div className="sm:w-1/3"></div>
 								<div className="w-4/5 sm:w-2/3">
 									<Button type="submit" variant="primary" className="w-full">
@@ -134,7 +134,7 @@ const Profile: React.FC<PageProps> = () => {
 						</div>
 					</div>
 					<div className="z-10 lg:w-1/2 sm:py-6 mt-12 lg:mt-0 -mx-4 sm:mx-0 px-4 sm:px-0 bg-primary text-white flex items-center">
-						<div className="px-4 lg:pl-8 py-8 lg:py-0">
+						<div className="sm:px-4 lg:pl-8 py-8 lg:py-0">
 							<p className="text-xl sm:text-2xl">Wallet</p>
 							<p className="text-8xl sm:text-9xl text-center my-8">
 								46{" "}

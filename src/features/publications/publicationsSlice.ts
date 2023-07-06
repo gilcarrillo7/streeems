@@ -243,8 +243,8 @@ export const publicationsSlice = createSlice({
 			// state.favourites = state.publications.filter((pub) =>
 			// 	payload.includes(pub.id)
 			// );
-			if (typeof payload === "object") state.favourites = [];
-			else state.favourites = payload;
+			if (Array.isArray(payload)) state.favourites = payload;
+			else state.favourites = [];
 			state.status = "idle";
 		});
 		builder.addCase(fetchFavPublications.rejected, (state, { payload }) => {

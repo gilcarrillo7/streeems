@@ -48,10 +48,10 @@ const IndexPage: React.FC<PageProps> = () => {
 								className={`min-h-[calc(100vh-126px)] bg-secundary text-white flex items-center`}
 							>
 								<div className="container">
-									<p className="font-zen text-3xl sm:text-5xl sm:w-1/2 sm:!leading-[3.5rem]">
+									<p className="font-zen text-3xl sm:text-5xl sm:w-1/2 sm:!leading-[3.5rem] -mt-12 sm:mt-0">
 										<Trans>home.t1</Trans>
 									</p>
-									<div className="flex justify-between flex-col sm:flex-row mt-12 sm:mt-48">
+									<div className="flex justify-between flex-col sm:flex-row mt-20 sm:mt-48">
 										<div className="sm:order-2 text-center">
 											<Button
 												variant="white"
@@ -61,7 +61,7 @@ const IndexPage: React.FC<PageProps> = () => {
 												<Trans>home.button1</Trans>
 											</Button>
 										</div>
-										<div className="flex sm:order-1 justify-center mt-8 sm:mt-0">
+										<div className="flex sm:order-1 justify-center mt-20 sm:mt-0">
 											<p className="font-light">
 												<Trans>home.t2</Trans>
 											</p>
