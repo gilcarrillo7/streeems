@@ -10,3 +10,5 @@ export const LOGIN = "login";
 export const ME = "me";
 export const FAVOURITE = "favourite-publications";
 export const LOGOUT = "logout";
+export const GOOGLE = "google";
+export const REGISTER_LOGIN = "register-or-login";
