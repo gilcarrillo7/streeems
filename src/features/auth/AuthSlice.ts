@@ -18,6 +18,7 @@ import {
   LOGOUT,
   GOOGLE,
   REGISTER_LOGIN,
+  CREATE_USER,
 } from "../../constants";
 import { FetchError } from "../../types";
 
@@ -224,17 +225,15 @@ export const doSignUp = createAsyncThunk<
   ISignupPayload,
   { rejectValue: FetchError }
 >("doSignup", async ({ email, password, re_password }) => {
-  const response = await fetch(`${BASE_URL}/${AUTH}/${USERS}/`, {
-    method: "POST",
+  const response = await fetch(`${BASE_URL}/${CREATE_USER}`, {
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      "content-type": "application/x-www-form-urlencoded",
     },
-    body: JSON.stringify({
-      email,
-      password,
-      re_password,
-    }),
+    referrerPolicy: "strict-origin-when-cross-origin",
+    body: `email=${email}&password=${password}&re_password=${re_password}`,
+    method: "POST",
+    mode: "cors",
+    credentials: "omit",
   });
   const data = await response.json();
   return data;

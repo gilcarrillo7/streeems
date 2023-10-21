@@ -73,9 +73,9 @@ const Publications = ({
 							<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 sm:gap-8 md:gap-16 lg:gap-24 xl:gap-32">
 								{publications.map((publication) => (
 									<Publication
-										key={publication.id}
+										key={publication.guid}
 										publication={publication}
-										favourite={favourites.includes(publication.id)}
+										favourite={favourites.includes(publication.guid)}
 										isInFavourite={isInFavourite}
 									/>
 								))}
