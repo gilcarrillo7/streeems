@@ -1,6 +1,6 @@
-export const BASE_URL = `https://www.streeems.com/api/v1`;
-export const PUBLICATIONS = "publications";
-export const DOSSIERS = "dossiers";
+export const BASE_URL = `http://coder-cat.com/streeemsws.asmx`;
+export const PUBLICATIONS = "GetPublicationList";
+export const DOSSIERS = "GetDossierList";
 export const INSTITUTIONS = "institutions";
 export const AUTH = "auth";
 export const USERS = "users";
@@ -12,3 +12,4 @@ export const FAVOURITE = "favourite-publications";
 export const LOGOUT = "logout";
 export const GOOGLE = "google";
 export const REGISTER_LOGIN = "register-or-login";
+export const CREATE_USER = "CreateUser";

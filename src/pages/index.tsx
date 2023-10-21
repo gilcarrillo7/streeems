@@ -32,7 +32,7 @@ const IndexPage: React.FC<PageProps> = () => {
       dispatch(fetchUserInfo(token));
       dispatch(fetchFavPublications(token));
     }
-    dispatch(fetchPublications(1));
+    dispatch(fetchPublications({ page: 1 }));
   }, [token]);
 
   return (
