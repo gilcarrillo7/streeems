@@ -19,6 +19,8 @@ import Button from "../components/shared/Button";
 import Publications from "../components/home/Publications";
 import Dossiers from "../components/home/Dossiers";
 import Loader from "../components/shared/Loader";
+import { fetchInstitutions } from "../features/institutions/InstitutionsSlice";
+import { fetchJournals } from "../features/journal/JournalsSlice";
 
 const IndexPage: React.FC<PageProps> = () => {
   const dispatch = useAppDispatch();
@@ -33,6 +35,8 @@ const IndexPage: React.FC<PageProps> = () => {
       dispatch(fetchFavPublications(token));
     }
     dispatch(fetchPublications({ page: 1 }));
+    dispatch(fetchInstitutions());
+    dispatch(fetchJournals());
   }, [token]);
 
   return (

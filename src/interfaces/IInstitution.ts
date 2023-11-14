@@ -1,8 +1,16 @@
 export default interface IInstitution {
-	country: null | string;
-	name: string;
-	home_page: null | string;
-	download_page: null | string;
-	abbreviation: null | string;
-	show_abbreviation: boolean;
+  guid: string;
+  name: string;
+  created: string;
+  modified: string;
+  country: string;
+  home_page: string;
+  download_page: string;
+  abbreviation: string;
+  is_active: boolean;
+  show_abbreviation: boolean;
+  has_been_reviewed: boolean;
+  id: string;
+  logo: string;
+  identifier: string;
 }

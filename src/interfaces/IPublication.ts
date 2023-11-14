@@ -1,42 +1,43 @@
 export default interface IPublication {
-  guid: string;
   id: null;
-  title: string;
-  content: string;
-  date: Date;
-  week: number;
-  month: number;
-  type: IType;
-  url: string;
-  header_image: string;
-  pages_number: string;
-  institution: IInstitution;
-  dossier: string;
-  journal: string;
-  feedback: unknown;
+  guid: string;
   created: string;
   modified: string;
+  content: string;
+  date: Date;
+  week: null;
+  month: null;
   excerpt: string;
+  header_image: string;
+  pages_number: string;
   language: string;
-  institution_id: string;
-  journal_id: string;
-  status: string;
+  title: string;
+  type: string;
+  url: string;
+  status: Status;
   created_by_id: string;
-  journalGuids: string[];
-  instituionGuids: string[];
-  favourite: boolean;
+  institutions: IInstitution[];
+  journals: IJournal[];
+  dossiers: string[];
+  feedback: null;
 }
 export enum Content {
   Tbd = "tbd",
 }
 
 export interface IInstitution {
-  country: ICountry | null;
+  country: string;
   name: string;
-  home_page: null | string;
-  download_page: null | string;
-  abbreviation: null | string;
-  is_active: boolean;
+  home_page: string;
+  download_page: string;
+  abbreviation: string;
+  is_active: string;
+}
+
+export enum Status {
+  Draft = "Draft",
+  Published = "published",
+  StatusPublished = "Published",
 }
 
 export enum ICountry {
@@ -52,4 +53,9 @@ export enum IType {
   Factsheet = "factsheet",
   Paper = "paper",
   Studie = "studie",
+}
+
+export interface IJournal {
+  name: string;
+  guid: string;
 }

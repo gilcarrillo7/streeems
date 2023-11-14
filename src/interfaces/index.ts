@@ -12,3 +12,4 @@ export { default as IFavouritePayload } from "./IFavouritePayload";
 export { default as IFavPublicationResponse } from "./IFavPublicationResponse";
 export { default as IFavResult } from "./IFavResult";
 export { default as IPublicationPayload } from "./IPublicationPayload";
+export { default as IJournal } from "./IJournal";
