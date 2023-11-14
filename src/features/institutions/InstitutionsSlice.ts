@@ -4,60 +4,71 @@ import { IInstitution } from "../../interfaces";
 import { BASE_URL, INSTITUTIONS } from "../../constants";
 
 type FetchError = {
-	message: string;
+  message: string;
 };
 
 // Define a type for the slice state
 interface InstitutionState {
-	status: "loading" | "idle";
-	error: string | null;
-	institutions: IInstitution[];
+  status: "loading" | "idle";
+  error: string | null;
+  institutions: IInstitution[];
 }
 
 // Define the initial state using that type
 const initialState: InstitutionState = {
-	status: "idle",
-	error: null,
-	institutions: [],
+  status: "idle",
+  error: null,
+  institutions: [],
 };
 
 export const institutionsSlice = createSlice({
-	name: "institutions",
-	initialState,
-	reducers: {},
-	extraReducers: (builder) => {
-		builder.addCase(fetchInstitutions.pending, (state) => {
-			state.status = "loading";
-			state.error = null;
-		});
-		builder.addCase(fetchInstitutions.fulfilled, (state, { payload }) => {
-			state.institutions = payload;
-			state.status = "idle";
-		});
-		builder.addCase(fetchInstitutions.rejected, (state, { payload }) => {
-			if (payload) state.error = payload.message;
-			state.status = "idle";
-		});
-	},
+  name: "institutions",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fetchInstitutions.pending, (state) => {
+      state.status = "loading";
+      state.error = null;
+    });
+    builder.addCase(fetchInstitutions.fulfilled, (state, { payload }) => {
+      state.institutions = payload;
+      state.status = "idle";
+    });
+    builder.addCase(fetchInstitutions.rejected, (state, { payload }) => {
+      if (payload) state.error = payload.message;
+      state.status = "idle";
+    });
+  },
 });
 
 export const fetchInstitutions = createAsyncThunk<
-	IInstitution[],
-	void,
-	{ rejectValue: FetchError }
+  IInstitution[],
+  void,
+  { rejectValue: FetchError }
 >("institutions", async () => {
-	const response = await fetch(`${BASE_URL}/${INSTITUTIONS}`);
-	const data = await response.json();
-	return data;
+  const response = await fetch(`${BASE_URL}/${INSTITUTIONS}`, {
+    headers: {
+      "content-type": "application/x-www-form-urlencoded",
+    },
+    referrerPolicy: "strict-origin-when-cross-origin",
+    body: `guid=&title=`,
+    method: "POST",
+    mode: "cors",
+    credentials: "omit",
+  });
+  const data = await response.json();
+  return data;
 });
 
 export const selectStatus = (state: RootState) => state.institutions.status;
 export const selectError = (state: RootState) => state.institutions.error;
 export const selectInstitutions = (state: RootState) =>
-	state.institutions.institutions;
+  state.institutions.institutions;
 export const selectInstitutionsName = (state: RootState) =>
-	state.institutions.institutions.map((institution) =>
-		institution.name.toLowerCase()
-	);
+  state.institutions.institutions.map((institution) =>
+    institution.name.toLowerCase()
+  );
+export const selectInstitutionName = (state: RootState, id: string) =>
+  state.institutions.institutions.find((institution) => institution.id === id);
 
 export default institutionsSlice.reducer;

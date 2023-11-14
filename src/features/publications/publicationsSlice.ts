@@ -105,24 +105,24 @@ const applyFilters = (
     filteredPubs = filteredPubs.filter((pub) =>
       journals.includes(pub.journal.toLowerCase())
     );
-  }
+  } /*
   if (institutions.length > 0) {
     filteredPubs = filteredPubs.filter((pub) =>
       institutions.includes(pub.institution.name.toLowerCase())
     );
-  }
+  }*/
   if (types.length > 0) {
     filteredPubs = filteredPubs.filter((pub) =>
       types.includes(pub.type.toLowerCase())
     );
-  }
+  } /*
   if (langs.length > 0 && langs[0] !== "alle") {
     filteredPubs = filteredPubs.filter((pub) =>
       pub.institution.country
         ? langs.includes(pub.institution.country.toLowerCase())
         : false
     );
-  }
+  }*/
   if (dateFrom) {
     const from = new Date(Date.parse(dateFrom)).getTime();
     filteredPubs = filteredPubs.filter(

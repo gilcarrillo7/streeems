@@ -188,16 +188,15 @@ export const doLogin = createAsyncThunk<
   ISignupPayload,
   { rejectValue: FetchError }
 >("doLogin", async ({ email, password }) => {
-  const response = await fetch(`${BASE_URL}/${AUTH}/${TOKEN}/${LOGIN}/`, {
-    method: "POST",
+  const response = await fetch(`${BASE_URL}/${LOGIN}`, {
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      "content-type": "application/x-www-form-urlencoded",
     },
-    body: JSON.stringify({
-      email,
-      password,
-    }),
+    referrerPolicy: "strict-origin-when-cross-origin",
+    body: `password=${password}&email=${email}`,
+    method: "POST",
+    mode: "cors",
+    credentials: "omit",
   });
   const data = await response.json();
   return data;
