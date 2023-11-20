@@ -81,5 +81,9 @@
 	"profile.t5": "Passwort:",
 	"profile.t6": "Ändern",
 	"paginator.t1": "Vorherige",
-	"paginator.t2": "Nächste"
-}
+	"paginator.t2": "Nächste",
+	"error.usernotfound": "User does not exist",
+	"error.usernotactive": "User is not active",
+	"error.usersignup": "Cannot create user"
+  }
+  

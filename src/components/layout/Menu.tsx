@@ -54,7 +54,7 @@ const Menu = () => {
 							href="#"
 							className="hover:underline"
 							onClick={() => {
-								dispatch(doLogout(token));
+								dispatch(doLogout());
 							}}
 						>
 							<Trans>menu.t6</Trans>

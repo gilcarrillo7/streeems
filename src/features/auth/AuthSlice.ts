@@ -3,7 +3,6 @@ import type { RootState } from "../../store";
 import {
   IActivationPayload,
   IUserInfoResponse,
-  ILoginResponse,
   ISignUpResponse,
   ISignupPayload,
 } from "../../interfaces";
@@ -19,6 +18,7 @@ import {
   GOOGLE,
   REGISTER_LOGIN,
   CREATE_USER,
+  ACTIVATE_USER,
 } from "../../constants";
 import { FetchError } from "../../types";
 
@@ -85,11 +85,19 @@ export const authSlice = createSlice({
       state.error = [];
     });
     builder.addCase(doLogin.fulfilled, (state, { payload }) => {
-      if (payload.non_field_errors) {
+      if (payload === "nouser") {
+        state.error = ["error.usernotfound"];
+      } else if (payload === "inactive") {
+        state.error = ["error.usernotactive"];
+      } else if (payload === "validuser") {
+        state.token = "active";
+        state.logged = true;
+      }
+      /*if (payload.non_field_errors) {
         state.error = payload.non_field_errors;
       } else if (payload.auth_token) {
         state.token = payload.auth_token;
-      }
+      }*/
       state.status = "idle";
     });
     builder.addCase(doLogin.rejected, (state, { payload }) => {
@@ -117,12 +125,10 @@ export const authSlice = createSlice({
     builder.addCase(doSignUp.fulfilled, (state, { payload }) => {
       state.confirmMail = false;
       state.error = [];
-      if (payload.password) {
-        state.error = payload.password;
-      } else if (payload.non_field_errors) {
-        state.error = payload.non_field_errors;
-      } else {
+      if (payload) {
         state.confirmMail = true;
+      } else {
+        state.error = ["error.usersignup"];
       }
       state.status = "idle";
     });
@@ -136,7 +142,7 @@ export const authSlice = createSlice({
     });
     builder.addCase(doActivation.fulfilled, (state, { payload }) => {
       state.confirmMail = false;
-      if (payload.token) {
+      /*if (payload.token) {
         state.error = payload.token;
       } else if (payload.uid) {
         state.error = payload.uid;
@@ -144,7 +150,7 @@ export const authSlice = createSlice({
         state.logged = true;
         state.token = payload.auth_token;
         state.error = [];
-      }
+      }*/
       state.statusActivation = "idle";
     });
     builder.addCase(doActivation.rejected, (state, { payload }) => {
@@ -157,7 +163,6 @@ export const authSlice = createSlice({
     });
     builder.addCase(googleAuth.fulfilled, (state, { payload }) => {
       state.confirmMail = false;
-      console.log(payload);
       state.statusActivation = "idle";
     });
     builder.addCase(googleAuth.rejected, (state, { payload }) => {
@@ -184,7 +189,7 @@ export const fetchUserInfo = createAsyncThunk<
 });
 
 export const doLogin = createAsyncThunk<
-  ILoginResponse,
+  any,
   ISignupPayload,
   { rejectValue: FetchError }
 >("doLogin", async ({ email, password }) => {
@@ -204,23 +209,24 @@ export const doLogin = createAsyncThunk<
 
 export const doLogout = createAsyncThunk<
   void,
-  string,
+  void,
   { rejectValue: FetchError }
->("doLogout", async (token) => {
-  const response = await fetch(`${BASE_URL}/${AUTH}/${TOKEN}/${LOGOUT}/`, {
-    method: "POST",
+>("doLogout", async () => {
+  const response = await fetch(`${BASE_URL}/${LOGOUT}`, {
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Token ${token}`,
+      "content-type": "application/x-www-form-urlencoded",
     },
+    referrerPolicy: "strict-origin-when-cross-origin",
+    method: "POST",
+    mode: "cors",
+    credentials: "omit",
   });
   const data = await response.json();
   return data;
 });
 
 export const doSignUp = createAsyncThunk<
-  ISignUpResponse,
+  boolean,
   ISignupPayload,
   { rejectValue: FetchError }
 >("doSignup", async ({ email, password, re_password }) => {
@@ -240,19 +246,18 @@ export const doSignUp = createAsyncThunk<
 
 export const doActivation = createAsyncThunk<
   IUserInfoResponse,
-  IActivationPayload,
+  string,
   { rejectValue: FetchError }
->("doActivation", async ({ token, uid }) => {
-  const response = await fetch(`${BASE_URL}/${AUTH}/${USERS}/${ACTIVATION}/`, {
-    method: "POST",
+>("doActivation", async (uid) => {
+  const response = await fetch(`${BASE_URL}/${ACTIVATE_USER}`, {
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      "content-type": "application/x-www-form-urlencoded",
     },
-    body: JSON.stringify({
-      token,
-      uid,
-    }),
+    referrerPolicy: "strict-origin-when-cross-origin",
+    body: `guid=${uid}`,
+    method: "POST",
+    mode: "cors",
+    credentials: "omit",
   });
   const data = await response.json();
   return data;

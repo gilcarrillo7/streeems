@@ -102,27 +102,31 @@ const applyFilters = (
     pub.title.toLowerCase().includes(searchTitle)
   );
   if (journals.length > 0) {
-    filteredPubs = filteredPubs.filter((pub) =>
-      journals.includes(pub.journal.toLowerCase())
-    );
-  } /*
+    filteredPubs = filteredPubs.filter((pub) => {
+      let isInPub = false;
+      pub.journals.forEach((journ) => {
+        if (journals.includes(journ.name.toLowerCase())) {
+          isInPub = true;
+        }
+      });
+      return isInPub;
+    });
+  }
   if (institutions.length > 0) {
     filteredPubs = filteredPubs.filter((pub) =>
-      institutions.includes(pub.institution.name.toLowerCase())
+      institutions.includes(pub.institutions[0].name.toLowerCase())
     );
-  }*/
+  }
   if (types.length > 0) {
     filteredPubs = filteredPubs.filter((pub) =>
       types.includes(pub.type.toLowerCase())
     );
-  } /*
+  }
   if (langs.length > 0 && langs[0] !== "alle") {
     filteredPubs = filteredPubs.filter((pub) =>
-      pub.institution.country
-        ? langs.includes(pub.institution.country.toLowerCase())
-        : false
+      langs.includes(pub.language.toLowerCase())
     );
-  }*/
+  }
   if (dateFrom) {
     const from = new Date(Date.parse(dateFrom)).getTime();
     filteredPubs = filteredPubs.filter(
@@ -186,7 +190,7 @@ export const publicationsSlice = createSlice({
         state.count = payload.count;
         state.next = payload.next ? payload.next.split("=")[1] : "";
         state.previous = payload.previous;
-        const dossiers = state.publications.map((pub) => pub.dossier);
+        /*const dossiers = state.publications.map((pub) => pub);
         const dossiersUnique = [...new Set(dossiers)];
         const percents = dossiersUnique.map((dossier) =>
           Math.round(
@@ -199,7 +203,7 @@ export const publicationsSlice = createSlice({
         const colors = dossiersUnique.map((dossier) =>
           getDossierColor(dossier)
         );
-        state.pieChart = { dossiers: dossiersUnique, percents, colors };
+        state.pieChart = { dossiers: dossiersUnique, percents, colors };*/
       }
       state.status = "idle";
     });
@@ -390,12 +394,15 @@ export const fetchFavouriteList = createAsyncThunk<
   { token: string; page: number },
   { rejectValue: FetchError }
 >("fetchFavouriteList", async ({ token, page }) => {
-  const response = await fetch(`${BASE_URL}/${FAVOURITE}/?page=${page}`, {
+  const response = await fetch(`${BASE_URL}/${FAVOURITE}`, {
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Token ${token}`,
+      "content-type": "application/x-www-form-urlencoded",
     },
+    referrerPolicy: "strict-origin-when-cross-origin",
+    body: `page=${page}`,
+    method: "POST",
+    mode: "cors",
+    credentials: "omit",
   });
   const data = await response.json();
   return data;

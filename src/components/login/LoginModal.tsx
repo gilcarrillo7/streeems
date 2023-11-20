@@ -110,7 +110,7 @@ const LoginModal = () => {
                   <div className="text-sm mb-4 text-error">
                     {error.map((error, i) => (
                       <p key={`${error}${i}`} className="">
-                        - {error}
+                        - <Trans>{error}</Trans>
                       </p>
                     ))}
                   </div>
@@ -161,7 +161,7 @@ const LoginModal = () => {
                 <div className="text-sm mb-4 text-error">
                   {error.map((error, i) => (
                     <p key={`${error}${i}`} className="">
-                      - {error}
+                      - <Trans>{error}</Trans>
                     </p>
                   ))}
                 </div>
