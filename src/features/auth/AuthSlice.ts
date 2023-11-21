@@ -19,6 +19,7 @@ import {
   REGISTER_LOGIN,
   CREATE_USER,
   ACTIVATE_USER,
+  CHECK_USER,
 } from "../../constants";
 import { FetchError } from "../../types";
 
@@ -169,6 +170,27 @@ export const authSlice = createSlice({
       if (payload) state.error.push(payload.message);
       state.statusActivation = "idle";
     });
+    builder.addCase(checkUser.pending, (state) => {
+      state.error = [];
+      state.logged = false;
+    });
+    builder.addCase(checkUser.fulfilled, (state, { payload }) => {
+      state.confirmMail = false;
+      state.logged = true;
+      console.log(payload);
+      /*if (payload.token) {
+        state.error = payload.token;
+      } else if (payload.uid) {
+        state.error = payload.uid;
+      } else {
+        state.logged = true;
+        state.token = payload.auth_token;
+        state.error = [];
+      }*/
+    });
+    builder.addCase(checkUser.rejected, (state, { payload }) => {
+      state.logged = false;
+    });
   },
 });
 
@@ -256,6 +278,25 @@ export const doActivation = createAsyncThunk<
     referrerPolicy: "strict-origin-when-cross-origin",
     body: `guid=${uid}`,
     method: "POST",
+    mode: "cors",
+    credentials: "omit",
+  });
+  const data = await response.json();
+  return data;
+});
+
+export const checkUser = createAsyncThunk<
+  any,
+  void,
+  { rejectValue: FetchError }
+>("checkUser", async () => {
+  const response = await fetch(`${BASE_URL}/${CHECK_USER}`, {
+    headers: {
+      "content-type": "application/x-www-form-urlencoded",
+    },
+    referrerPolicy: "strict-origin-when-cross-origin",
+    body: null,
+    method: "GET",
     mode: "cors",
     credentials: "omit",
   });
