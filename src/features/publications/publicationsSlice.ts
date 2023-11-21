@@ -327,7 +327,7 @@ export const fetchPublications = createAsyncThunk<
       "content-type": "application/x-www-form-urlencoded",
     },
     referrerPolicy: "strict-origin-when-cross-origin",
-    body: `guid=&numInPage=${numInPage}&currentPage=${page}&title=&status=&sortColumn=date&sortDir=`,
+    body: `guid=&numInPage=${numInPage}&currentPage=${page}&title=&status=&sortColumn=date&sortDir=desc`,
     method: "POST",
     mode: "cors",
     credentials: "omit",
