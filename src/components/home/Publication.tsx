@@ -6,8 +6,6 @@ import {
   postFavourite,
   deleteFavourite,
 } from "../../features/publications/publicationsSlice";
-import { selectInstitutions } from "../../features/institutions/InstitutionsSlice";
-import { selectJournals } from "../../features/journal/JournalsSlice";
 import { useAppSelector, useAppDispatch } from "../../hooks";
 import { getMonthYear } from "../../utils";
 
@@ -54,7 +52,7 @@ const Publication = ({
   const {
     guid,
     title,
-    date,
+    modified,
     pages_number,
     header_image,
     url,
@@ -117,7 +115,7 @@ const Publication = ({
             <p className="text-secundary text-base font-bold capitalize">
               {institutions[0]?.name}
             </p>
-            <p className="taxt-sm">{getMonthYear(date.toString(), language)}</p>
+            <p className="taxt-sm">{getMonthYear(modified.toString(), language)}</p>
             <p className="text-sm mb-4">
               {pages_number} <Trans>publication.pages</Trans>
             </p>

@@ -15,3 +15,4 @@ export const GOOGLE = "google";
 export const REGISTER_LOGIN = "register-or-login";
 export const CREATE_USER = "CreateUser";
 export const ACTIVATE_USER = "ActivateUser";
+export const CHECK_USER = "CheckUser";

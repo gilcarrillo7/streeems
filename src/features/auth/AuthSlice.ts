@@ -295,10 +295,9 @@ export const checkUser = createAsyncThunk<
       "content-type": "application/x-www-form-urlencoded",
     },
     referrerPolicy: "strict-origin-when-cross-origin",
-    body: null,
-    method: "GET",
+    method: "POST",
     mode: "cors",
-    credentials: "omit",
+    credentials: "include",
   });
   const data = await response.json();
   return data;

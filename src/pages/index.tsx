@@ -13,6 +13,7 @@ import {
   fetchUserInfo,
   setLoginModal,
   setLogged,
+  checkUser,
 } from "../features/auth/AuthSlice";
 import { useAppSelector, useAppDispatch } from "../hooks";
 import Layout from "../components/layout/Layout";
@@ -32,9 +33,11 @@ const IndexPage: React.FC<PageProps> = () => {
 
   useEffect(() => {
     if (token !== "") {
-      dispatch(setLogged(true));
+      //dispatch(setLogged(true));
       //dispatch(fetchUserInfo(token));
-      dispatch(fetchFavPublications(token));
+      //TODO: get fav publications
+      //dispatch(fetchFavPublications(token));
+      dispatch(checkUser());
     }
     dispatch(fetchPublications({ page: 1 }));
     dispatch(fetchInstitutions());
